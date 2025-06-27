@@ -3,7 +3,7 @@
     android:id="@+id/settingsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F7"
+    android:background="@color/background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -25,9 +25,8 @@
             android:background="@android:color/transparent"
             android:src="@drawable/back"
             android:contentDescription="Back"
-            android:tint="#000000"
+            android:tint="@color/textPrimary"
             android:scaleType="fitCenter" />
-
 
         <!-- Title -->
         <TextView
@@ -37,7 +36,7 @@
             android:text="Settings"
             android:textSize="35sp"
             android:textStyle="bold"
-            android:textColor="#000000"
+            android:textColor="@color/textPrimary"
             android:fontFamily="@font/nf"
             android:layout_marginBottom="32dp" />
 
@@ -59,14 +58,14 @@
                 android:layout_height="wrap_content"
                 android:text="Notifications"
                 android:textSize="18sp"
-                android:textColor="#000000"
+                android:textColor="@color/textPrimary"
                 android:fontFamily="@font/nf" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_info_details"
-                android:tint="#888888" />
+                android:tint="@color/textSecondary" />
         </LinearLayout>
 
         <!-- Dark Mode Toggle -->
@@ -88,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="Dark Mode"
                 android:textSize="18sp"
-                android:textColor="#000000"
+                android:textColor="@color/textPrimary"
                 android:fontFamily="@font/nf" />
 
             <Switch
@@ -116,14 +115,14 @@
                 android:layout_height="wrap_content"
                 android:text="About"
                 android:textSize="18sp"
-                android:textColor="#000000"
+                android:textColor="@color/textPrimary"
                 android:fontFamily="@font/nf" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_help"
-                android:tint="#888888" />
+                android:tint="@color/textSecondary" />
         </LinearLayout>
 
         <!-- Version Info -->
@@ -132,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Version 1.0.0"
-            android:textColor="#888888"
+            android:textColor="@color/textSecondary"
             android:textSize="14sp"
             android:gravity="center"
             android:layout_marginTop="32dp"

@@ -1,7 +1,8 @@
 package com.example.nothingtasks;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +13,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Load dark mode preference *before* view inflation
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isDarkMode = prefs.getBoolean("dark_mode", false);
+        AppCompatDelegate.setDefaultNightMode(
+                isDarkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_settings);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settingsRoot), (v, insets) -> {
@@ -28,16 +34,24 @@ public class SettingsActivity extends AppCompatActivity {
 
         // Back button click listener
         findViewById(R.id.backButton).setOnClickListener(v -> finish());
-    }
 
+        // Dark Mode Switch setup
+        Switch darkModeSwitch = findViewById(R.id.darkModeSwitch);
+        darkModeSwitch.setChecked(isDarkMode);
 
-    // Handle back arrow press
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // Close activity
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Save preference
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("dark_mode", isChecked);
+            editor.apply();
+
+            // Apply theme
+            AppCompatDelegate.setDefaultNightMode(
+                    isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+            );
+
+            // Optionally restart the activity to apply changes immediately
+            recreate();
+        });
     }
 }

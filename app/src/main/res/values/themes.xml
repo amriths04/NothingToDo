@@ -1,9 +1,10 @@
+<!-- res/values/themes.xml -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.NothingTasks" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.NothingTasks" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Light Mode Custom Colors -->
+        <item name="cardBackgroundColor">#FFFFFF</item>
+        <item name="cardTextPrimary">#000000</item>
+        <item name="cardTextSecondary">#888888</item>
+        <item name="cardIconTint">#007AFF</item>
     </style>
-
-    <style name="Theme.NothingTasks" parent="Base.Theme.NothingTasks" />
 </resources>
