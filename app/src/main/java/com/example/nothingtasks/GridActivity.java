@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Canvas;
 
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,11 +21,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ListDetailsActivity extends AppCompatActivity {
+public class GridActivity extends AppCompatActivity {
 
-    private int listId;
-    private String listName;
+    public static final int FILTER_ALL = 0;
+    public static final int FILTER_TODAY = 1;
+    public static final int FILTER_FLAGGED = 2;
+    public static final int FILTER_SCHEDULED = 3;
+
     private ReminderAdapter reminderAdapter;
+    private int filterType;
+    private String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,53 +44,77 @@ public class ListDetailsActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Get list ID and name from Intent
-        listId = getIntent().getIntExtra("listId", -1);
-        listName = getIntent().getStringExtra("listName");
+        // Get filter type from Intent (default ALL)
+        filterType = getIntent().getIntExtra("filterType", FILTER_ALL);
 
-        if (listId == -1 || listName == null) {
-            Toast.makeText(this, "Invalid list data", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
+        // Determine title and which LiveData to observe
+        TaskDatabase db = TaskDatabase.getInstance(this);
+        ReminderDao reminderDao = db.reminderDao();
+
+        switch (filterType) {
+            case FILTER_ALL:
+                title = "All";
+                break;
+            case FILTER_TODAY:
+                title = "Today";
+                break;
+            case FILTER_FLAGGED:
+                title = "Flagged";
+                break;
+            case FILTER_SCHEDULED:
+                title = "Scheduled";
+                break;
+            default:
+                title = "All";
         }
 
-        TextView title = findViewById(R.id.listTitle);
-        title.setText(listName);
+        TextView titleText = findViewById(R.id.listTitle);
+        titleText.setText(title);
+
+        // Hide delete list button for filtered views
+        ImageButton deleteButton = findViewById(R.id.deleteListButton);
+        deleteButton.setVisibility(View.GONE);
 
         // Back button closes activity
         ImageButton back = findViewById(R.id.backButton);
         back.setOnClickListener(v -> finish());
 
-        // Delete list button with DB delete logic
-        ImageButton delete = findViewById(R.id.deleteListButton);
-        delete.setOnClickListener(v -> {
-            new Thread(() -> {
-                TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
-                db.taskListDao().deleteListById(listId);
-
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "List deleted", Toast.LENGTH_SHORT).show();
-                    finish(); // close activity and return to previous screen
-                });
-            }).start();
-        });
-
-        // Setup DB, DAO, Adapter, RecyclerView
-        TaskDatabase db = TaskDatabase.getInstance(this);
-        ReminderDao reminderDao = db.reminderDao();
-
+        // Setup RecyclerView and Adapter
         RecyclerView recyclerView = findViewById(R.id.remindersRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         reminderAdapter = new ReminderAdapter(reminderDao);
         recyclerView.setAdapter(reminderAdapter);
 
-        // Observe reminders
-        reminderDao.getRemindersByList(listId).observe(this, reminders -> {
-            reminderAdapter.setReminders(reminders);
-        });
+        // Observe filtered reminders based on filterType
+        switch (filterType) {
+            case FILTER_ALL:
+                reminderDao.getAllReminders().observe(this, reminders -> {
+                    reminderAdapter.setReminders(reminders);
+                });
+                break;
+            case FILTER_TODAY:
+                reminderDao.getRemindersForToday().observe(this, reminders -> {
+                    reminderAdapter.setReminders(reminders);
+                });
+                break;
+            case FILTER_FLAGGED:
+                reminderDao.getFlaggedReminders().observe(this, reminders -> {
+                    reminderAdapter.setReminders(reminders);
+                });
+                break;
+            case FILTER_SCHEDULED:
+                reminderDao.getScheduledReminders().observe(this, reminders -> {
+                    reminderAdapter.setReminders(reminders);
+                });
+                break;
+            default:
+                reminderDao.getAllReminders().observe(this, reminders -> {
+                    reminderAdapter.setReminders(reminders);
+                });
+        }
 
-        // ✅ Add swipe-to-delete support
+        // Swipe to delete support
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                     @Override
@@ -117,7 +145,7 @@ public class ListDetailsActivity extends AppCompatActivity {
                                 itemView.getLeft() + dX, itemView.getBottom(), paint);
 
                         // Draw trash icon
-                        Drawable icon = ContextCompat.getDrawable(ListDetailsActivity.this, android.R.drawable.ic_menu_delete);
+                        Drawable icon = ContextCompat.getDrawable(GridActivity.this, android.R.drawable.ic_menu_delete);
                         int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                         int iconTop = itemView.getTop() + iconMargin;
                         int iconLeft = itemView.getLeft() + 32;
@@ -135,17 +163,16 @@ public class ListDetailsActivity extends AppCompatActivity {
         );
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-
         // Add Reminder button
         findViewById(R.id.addReminderBtn).setOnClickListener(v -> {
             AddReminderDialog.show(this, (reminderTitle, desc, date, repeat) -> {
-                Reminder reminder = new Reminder(reminderTitle, desc, false, false, date, listId, repeat); // ✅ pass repeat directly
+                // For filtered views, new reminders get no list (listId = null)
+                Reminder reminder = new Reminder(reminderTitle, desc, false, false, date, null, repeat);
                 new Thread(() -> reminderDao.insert(reminder)).start();
             });
         });
 
-
-        // Filter button
+        // Filter button (stub)
         findViewById(R.id.filterButton).setOnClickListener(v -> {
             Toast.makeText(this, "Filter coming soon", Toast.LENGTH_SHORT).show();
         });

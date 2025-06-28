@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Reminder"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="?attr/cardTextPrimary"
         android:gravity="center"
@@ -125,7 +125,7 @@
         android:gravity="start"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="4dp"
-        android:paddingHorizontal="4dp">
+        android:paddingHorizontal="2dp">
 
         <TextView
             android:id="@+id/todayShortcut"
@@ -151,6 +151,38 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
             android:fontFamily="@font/nf" />
+        <!-- Repeat every + Spinner -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repeat every"
+                android:textSize="14sp"
+                android:textColor="?attr/cardTextPrimary"
+                android:fontFamily="@font/nf"
+                android:layout_marginEnd="8dp" />
+
+            <Spinner
+                android:id="@+id/repeatSpinner"
+                style="@style/CustomSpinnerStyle"
+                android:layout_width="120dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="16dp"
+                android:spinnerMode="dropdown"
+                android:entries="@array/repeat_options"
+                android:backgroundTint="?attr/cardTextSecondary"
+                android:popupBackground="@drawable/spinner_dropdown_bg"
+                android:fontFamily="@font/nf"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- Bottom Buttons -->

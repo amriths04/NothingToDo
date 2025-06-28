@@ -6,8 +6,11 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.*;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import java.util.Calendar;
@@ -15,7 +18,7 @@ import java.util.Calendar;
 public class AddReminderDialog {
 
     public interface OnReminderAddListener {
-        void onReminderAdded(String title, String description, String datetime);
+        void onReminderAdded(String title, String description, @Nullable String datetime, @Nullable String repeat);
     }
 
     public static void show(Context context, OnReminderAddListener listener) {
@@ -28,8 +31,18 @@ public class AddReminderDialog {
         ImageButton dateBtn = dialogView.findViewById(R.id.pickDateBtn);
         ImageButton timeBtn = dialogView.findViewById(R.id.pickTimeBtn);
 
+        Spinner repeatSpinner = dialogView.findViewById(R.id.repeatSpinner);
+
         TextView todayShortcut = dialogView.findViewById(R.id.todayShortcut);
         TextView clearDateBtn = dialogView.findViewById(R.id.clearDateBtn);
+        // Set custom spinner adapter with nf font
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                context,
+                R.array.repeat_options,
+                R.layout.spinner_item_nf
+        );
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_nf); // ✅ use custom dropdown
+        repeatSpinner.setAdapter(adapter);
 
         final Calendar selectedCalendar = Calendar.getInstance();
         final boolean[] hasDate = {false};
@@ -56,7 +69,6 @@ public class AddReminderDialog {
             }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false).show();
         };
 
-        // Assign shared listeners to both icons and text views
         dateBtn.setOnClickListener(openDatePicker);
         dateText.setOnClickListener(openDatePicker);
 
@@ -97,21 +109,30 @@ public class AddReminderDialog {
 
             String dateTime = null;
             if (hasDate[0] || hasTime[0]) {
-                dateTime = String.format("%04d-%02d-%02d %02d:%02d",
-                        selectedCalendar.get(Calendar.YEAR),
-                        selectedCalendar.get(Calendar.MONTH) + 1,
-                        selectedCalendar.get(Calendar.DAY_OF_MONTH),
+                dateTime = String.format("%04d-%02d-%02d %02d:%02d", selectedCalendar.get(Calendar.YEAR), selectedCalendar.get(Calendar.MONTH) + 1, selectedCalendar.get(Calendar.DAY_OF_MONTH),
                         selectedCalendar.get(Calendar.HOUR_OF_DAY),
                         selectedCalendar.get(Calendar.MINUTE));
             }
 
-            listener.onReminderAdded(title, desc, dateTime);
+            String repeat = repeatSpinner.getSelectedItem().toString();
+            if ("None".equals(repeat)) {
+                repeat = null;
+            }
+
+            listener.onReminderAdded(title, desc, dateTime, repeat);
             dialog.dismiss();
         });
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
+
         dialog.show();
+        Window window = dialog.getWindow();
+        if (window != null) {
+            int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.97); // 90% of screen
+            window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
     }
 }

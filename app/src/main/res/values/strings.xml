@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NothingTasks</string>
+    <string-array name="repeat_options">
+        <item>None</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+
 </resources>

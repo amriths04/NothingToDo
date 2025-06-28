@@ -3,10 +3,13 @@ package com.example.nothingtasks;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +24,10 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,31 +45,73 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Settings
+        // --- Grid views ---
+        View todayGrid = findViewById(R.id.todayGrid);
+        ImageView todayIcon = todayGrid.findViewById(R.id.gridIcon);
+        TextView todayTitle = todayGrid.findViewById(R.id.gridTitle);
+        TextView todayCount = todayGrid.findViewById(R.id.gridCount);
+
+        View scheduledGrid = findViewById(R.id.scheduledGrid);
+        ImageView scheduledIcon = scheduledGrid.findViewById(R.id.gridIcon);
+        TextView scheduledTitle = scheduledGrid.findViewById(R.id.gridTitle);
+        TextView scheduledCount = scheduledGrid.findViewById(R.id.gridCount);
+
+        View allGrid = findViewById(R.id.allGrid);
+        ImageView allIcon = allGrid.findViewById(R.id.gridIcon);
+        TextView allTitle = allGrid.findViewById(R.id.gridTitle);
+        TextView allCount = allGrid.findViewById(R.id.gridCount);
+
+        View flaggedGrid = findViewById(R.id.flaggedGrid);
+        ImageView flaggedIcon = flaggedGrid.findViewById(R.id.gridIcon);
+        TextView flaggedTitle = flaggedGrid.findViewById(R.id.gridTitle);
+        TextView flaggedCount = flaggedGrid.findViewById(R.id.gridCount);
+
+        // Set icons and titles once
+        todayIcon.setImageResource(R.drawable.today);
+        todayTitle.setText("Today");
+
+        scheduledIcon.setImageResource(R.drawable.calendar);
+        scheduledTitle.setText("Scheduled");
+
+        allIcon.setImageResource(R.drawable.all);
+        allTitle.setText("All");
+
+        flaggedIcon.setImageResource(R.drawable.flagged);
+        flaggedTitle.setText("Flagged");
+        flaggedIcon.setColorFilter(Color.RED); // flagged in red
+
+        // Setup buttons and clicks for grids (your existing code)
+        todayGrid.setOnClickListener(v -> openGridActivity(GridActivity.FILTER_TODAY));
+        scheduledGrid.setOnClickListener(v -> openGridActivity(GridActivity.FILTER_SCHEDULED));
+        allGrid.setOnClickListener(v -> openGridActivity(GridActivity.FILTER_ALL));
+        flaggedGrid.setOnClickListener(v -> openGridActivity(GridActivity.FILTER_FLAGGED));
+
+        // Settings button
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         });
 
-        // "+" Add List
+        // "+" Add List button
         ImageButton addListButton = findViewById(R.id.addListButton);
         addListButton.setOnClickListener(v -> showAddListDialog());
 
         // "+ New Reminder" from bottom bar
         TextView newReminderText = findViewById(R.id.newReminderText);
         newReminderText.setOnClickListener(v -> {
-            AddReminderDialog.show(MainActivity.this, (title, desc, dateTime) -> {
-                Reminder reminder = new Reminder(title, desc, false, false, dateTime, null); // ✅ fixed order
-
+            AddReminderDialog.show(MainActivity.this, (title, desc, dateTime, repeat) -> {
+                Reminder reminder = new Reminder(title, desc, false, false, dateTime, null, repeat);
                 new Thread(() -> {
                     TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
                     db.reminderDao().insert(reminder);
 
                     runOnUiThread(() -> {
                         Toast.makeText(MainActivity.this, "Reminder added", Toast.LENGTH_SHORT).show();
+                        updateGridCounts();  // update counts after adding reminder
                     });
                 }).start();
             });
+
         });
 
         // Apply edge insets
@@ -73,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Setup RecyclerView
+        // Setup RecyclerView for task lists
         RecyclerView recyclerView = findViewById(R.id.myListsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -97,6 +145,50 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setTaskLists(taskLists);
             }
         });
+
+        // Initial counts update
+        updateGridCounts();
+    }
+
+    private void openGridActivity(int filterType) {
+        Intent intent = new Intent(MainActivity.this, GridActivity.class);
+        intent.putExtra("filterType", filterType);
+        startActivity(intent);
+    }
+
+
+    private void updateGridCounts() {
+        TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
+
+        // Find views again (or make them class variables)
+        View todayGrid = findViewById(R.id.todayGrid);
+        TextView todayCount = todayGrid.findViewById(R.id.gridCount);
+
+        View scheduledGrid = findViewById(R.id.scheduledGrid);
+        TextView scheduledCount = scheduledGrid.findViewById(R.id.gridCount);
+
+        View allGrid = findViewById(R.id.allGrid);
+        TextView allCount = allGrid.findViewById(R.id.gridCount);
+
+        View flaggedGrid = findViewById(R.id.flaggedGrid);
+        TextView flaggedCount = flaggedGrid.findViewById(R.id.gridCount);
+
+        // Get today's date string in your app's date format (assumed yyyy-MM-dd here)
+        String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+
+        new Thread(() -> {
+            int countAll = db.reminderDao().getCountAll();
+            int countToday = db.reminderDao().getCountToday(todayDate);
+            int countScheduled = db.reminderDao().getCountScheduled(todayDate);
+            int countFlagged = db.reminderDao().getCountFlagged();
+
+            runOnUiThread(() -> {
+                allCount.setText(String.valueOf(countAll));
+                todayCount.setText(String.valueOf(countToday));
+                scheduledCount.setText(String.valueOf(countScheduled));
+                flaggedCount.setText(String.valueOf(countFlagged));
+            });
+        }).start();
     }
 
     private void showAddListDialog() {

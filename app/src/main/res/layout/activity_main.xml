@@ -55,13 +55,17 @@
                 android:layout_marginTop="24dp"
                 android:gravity="center">
 
-                <include layout="@layout/grid_card_today"
+                <include
+                    android:id="@+id/todayGrid"
+                    layout="@layout/grid_card_item"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp" />
 
-                <include layout="@layout/grid_card_scheduled"
+                <include
+                    android:id="@+id/scheduledGrid"
+                    layout="@layout/grid_card_item"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -77,18 +81,23 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center">
 
-                <include layout="@layout/grid_card_all"
+                <include
+                    android:id="@+id/allGrid"
+                    layout="@layout/grid_card_item"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp" />
 
-                <include layout="@layout/grid_card_flagged"
+                <include
+                    android:id="@+id/flaggedGrid"
+                    layout="@layout/grid_card_item"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp" />
             </LinearLayout>
+
 
             <!-- My Lists Title Row -->
             <LinearLayout
