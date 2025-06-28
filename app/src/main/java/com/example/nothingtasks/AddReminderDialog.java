@@ -32,33 +32,35 @@ public class AddReminderDialog {
         ImageButton timeBtn = dialogView.findViewById(R.id.pickTimeBtn);
 
         Spinner repeatSpinner = dialogView.findViewById(R.id.repeatSpinner);
-
         TextView todayShortcut = dialogView.findViewById(R.id.todayShortcut);
         TextView clearDateBtn = dialogView.findViewById(R.id.clearDateBtn);
+
         // Set custom spinner adapter with nf font
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 context,
                 R.array.repeat_options,
                 R.layout.spinner_item_nf
         );
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_nf); // ✅ use custom dropdown
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_nf);
         repeatSpinner.setAdapter(adapter);
 
         final Calendar selectedCalendar = Calendar.getInstance();
         final boolean[] hasDate = {false};
         final boolean[] hasTime = {false};
 
-        // Shared listener to open DatePickerDialog
+        // Date picker
         View.OnClickListener openDatePicker = v -> {
             Calendar now = Calendar.getInstance();
             new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
                 hasDate[0] = true;
                 selectedCalendar.set(year, month, dayOfMonth);
+                selectedCalendar.set(Calendar.HOUR_OF_DAY, 0);   // reset time
+                selectedCalendar.set(Calendar.MINUTE, 0);
                 dateText.setText(String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth));
             }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
         };
 
-        // Shared listener to open TimePickerDialog
+        // Time picker
         View.OnClickListener openTimePicker = v -> {
             Calendar now = Calendar.getInstance();
             new TimePickerDialog(context, (view, hourOfDay, minute) -> {
@@ -78,8 +80,11 @@ public class AddReminderDialog {
         todayShortcut.setOnClickListener(v -> {
             Calendar now = Calendar.getInstance();
             selectedCalendar.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+            selectedCalendar.set(Calendar.HOUR_OF_DAY, 0);   // reset time to start of today
+            selectedCalendar.set(Calendar.MINUTE, 0);
             dateText.setText("Today");
             hasDate[0] = true;
+            hasTime[0] = false;
         });
 
         clearDateBtn.setOnClickListener(v -> {
@@ -109,7 +114,10 @@ public class AddReminderDialog {
 
             String dateTime = null;
             if (hasDate[0] || hasTime[0]) {
-                dateTime = String.format("%04d-%02d-%02d %02d:%02d", selectedCalendar.get(Calendar.YEAR), selectedCalendar.get(Calendar.MONTH) + 1, selectedCalendar.get(Calendar.DAY_OF_MONTH),
+                dateTime = String.format("%04d-%02d-%02d %02d:%02d",
+                        selectedCalendar.get(Calendar.YEAR),
+                        selectedCalendar.get(Calendar.MONTH) + 1,
+                        selectedCalendar.get(Calendar.DAY_OF_MONTH),
                         selectedCalendar.get(Calendar.HOUR_OF_DAY),
                         selectedCalendar.get(Calendar.MINUTE));
             }
@@ -130,9 +138,8 @@ public class AddReminderDialog {
         dialog.show();
         Window window = dialog.getWindow();
         if (window != null) {
-            int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.97); // 90% of screen
+            int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.97);
             window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-
     }
 }

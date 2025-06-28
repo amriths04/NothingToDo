@@ -34,12 +34,14 @@ public interface ReminderDao {
     LiveData<List<Reminder>> getRemindersByDate(String filterDate);
 
     // Get reminders for today (date = current date)
-    @Query("SELECT * FROM reminders WHERE date = date('now') ORDER BY id DESC")
-    LiveData<List<Reminder>> getRemindersForToday();
+    @Query("SELECT * FROM reminders WHERE date LIKE :todayDate || '%' ORDER BY id DESC")
+    LiveData<List<Reminder>> getRemindersForToday(String todayDate);
 
     // Get scheduled reminders (date after today)
-    @Query("SELECT * FROM reminders WHERE date > date('now') ORDER BY id DESC")
-    LiveData<List<Reminder>> getScheduledReminders();
+    @Query("SELECT * FROM reminders WHERE datetime(date) > datetime(:nowDateTime) ORDER BY datetime(date) ASC")
+    LiveData<List<Reminder>> getScheduledReminders(String nowDateTime);
+
+
 
     // --- NEW COUNT QUERIES ---
 

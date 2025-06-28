@@ -21,6 +21,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class GridActivity extends AppCompatActivity {
 
     public static final int FILTER_ALL = 0;
@@ -94,9 +98,11 @@ public class GridActivity extends AppCompatActivity {
                 });
                 break;
             case FILTER_TODAY:
-                reminderDao.getRemindersForToday().observe(this, reminders -> {
+                String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+                reminderDao.getRemindersForToday(today).observe(this, reminders -> {
                     reminderAdapter.setReminders(reminders);
                 });
+
                 break;
             case FILTER_FLAGGED:
                 reminderDao.getFlaggedReminders().observe(this, reminders -> {
@@ -104,7 +110,8 @@ public class GridActivity extends AppCompatActivity {
                 });
                 break;
             case FILTER_SCHEDULED:
-                reminderDao.getScheduledReminders().observe(this, reminders -> {
+                String nowDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
+                reminderDao.getScheduledReminders(nowDateTime).observe(this, reminders -> {
                     reminderAdapter.setReminders(reminders);
                 });
                 break;
