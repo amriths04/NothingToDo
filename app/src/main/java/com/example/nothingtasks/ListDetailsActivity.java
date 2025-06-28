@@ -1,20 +1,32 @@
 package com.example.nothingtasks;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Canvas;
+
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ListDetailsActivity extends AppCompatActivity {
 
     private int listId;
     private String listName;
+    private ReminderAdapter reminderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +71,82 @@ public class ListDetailsActivity extends AppCompatActivity {
             }).start();
         });
 
-        // Add Reminder button (placeholder)
-        findViewById(R.id.addReminderBtn).setOnClickListener(v -> {
-            Toast.makeText(this, "Add reminder in " + listName, Toast.LENGTH_SHORT).show();
-            // TODO: Show dialog to add reminder
+        // Setup DB, DAO, Adapter, RecyclerView
+        TaskDatabase db = TaskDatabase.getInstance(this);
+        ReminderDao reminderDao = db.reminderDao();
+
+        RecyclerView recyclerView = findViewById(R.id.remindersRecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        reminderAdapter = new ReminderAdapter(reminderDao);
+        recyclerView.setAdapter(reminderAdapter);
+
+        // Observe reminders
+        reminderDao.getRemindersByList(listId).observe(this, reminders -> {
+            reminderAdapter.setReminders(reminders);
         });
 
-        // Filter button (placeholder)
+        // ✅ Add swipe-to-delete support
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView,
+                                          @NonNull RecyclerView.ViewHolder viewHolder,
+                                          @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        int position = viewHolder.getAdapterPosition();
+                        Reminder reminderToDelete = reminderAdapter.getReminderAt(position);
+                        new Thread(() -> reminderDao.delete(reminderToDelete)).start();
+                    }
+
+                    @Override
+                    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                            @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                                            int actionState, boolean isCurrentlyActive) {
+
+                        // Background color
+                        Paint paint = new Paint();
+                        paint.setColor(Color.parseColor("#F44336")); // red
+
+                        View itemView = viewHolder.itemView;
+                        c.drawRect(itemView.getLeft(), itemView.getTop(),
+                                itemView.getLeft() + dX, itemView.getBottom(), paint);
+
+                        // Draw trash icon
+                        Drawable icon = ContextCompat.getDrawable(ListDetailsActivity.this, android.R.drawable.ic_menu_delete);
+                        int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+                        int iconTop = itemView.getTop() + iconMargin;
+                        int iconLeft = itemView.getLeft() + 32;
+                        int iconRight = iconLeft + icon.getIntrinsicWidth();
+                        int iconBottom = iconTop + icon.getIntrinsicHeight();
+
+                        if (dX > 0) { // swiping right
+                            icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                            icon.draw(c);
+                        }
+
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                    }
+                }
+        );
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+        // Add Reminder button
+        findViewById(R.id.addReminderBtn).setOnClickListener(v -> {
+            AddReminderDialog.show(this, (reminderTitle, desc, date) -> {
+                Reminder reminder = new Reminder(reminderTitle, desc, false, false, date, listId);
+                new Thread(() -> {
+                    reminderDao.insert(reminder);
+                }).start();
+            });
+        });
+
+        // Filter button
         findViewById(R.id.filterButton).setOnClickListener(v -> {
             Toast.makeText(this, "Filter coming soon", Toast.LENGTH_SHORT).show();
         });

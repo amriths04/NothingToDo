@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="16dp"
+    android:background="@drawable/rounded_dialog_bg"
+    android:fontFamily="@font/nf">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Reminder"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:gravity="center"
+        android:fontFamily="@font/nf"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Reminder Title -->
+    <EditText
+        android:id="@+id/reminderTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:textSize="16sp"
+        android:fontFamily="@font/nf"
+        android:inputType="text" />
+
+    <!-- Reminder Description -->
+    <EditText
+        android:id="@+id/reminderDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description (optional)"
+        android:minLines="2"
+        android:maxLines="4"
+        android:gravity="top"
+        android:textSize="14sp"
+        android:fontFamily="@font/nf"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="8dp" />
+
+    <!-- Date & Time -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:weightSum="2">
+
+        <!-- Date -->
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/pickDateBtn"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@android:drawable/ic_menu_my_calendar"
+                android:background="@android:color/transparent"
+                android:contentDescription="Pick Date" />
+
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No date"
+                android:textSize="14sp"
+                android:textColor="#444444"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/nf" />
+        </LinearLayout>
+
+        <!-- Time -->
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="16dp">
+
+            <ImageButton
+                android:id="@+id/pickTimeBtn"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@android:drawable/ic_menu_recent_history"
+                android:background="@android:color/transparent"
+                android:contentDescription="Pick Time" />
+
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No time"
+                android:textSize="14sp"
+                android:textColor="#444444"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/nf" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Buttons Row -->
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#FF3B30"
+            android:textSize="16sp"
+            android:fontFamily="@font/nf"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:textColor="#007AFF"
+            android:textSize="16sp"
+            android:fontFamily="@font/nf"
+            android:padding="8dp" />
+    </LinearLayout>
+
+</LinearLayout>

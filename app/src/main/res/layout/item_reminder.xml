@@ -1,0 +1,61 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:orientation="vertical"
+    android:layout_margin="8dp"
+    android:background="@drawable/rounded_item_bg">
+
+    <!-- Top row: Done Checkbox, Title, Flag Checkbox -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="1">
+
+        <!-- ✅ Checkbox: Done -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBoxDone"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            app:buttonTint="@color/iconAccent"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+
+        <!-- 📃 Title -->
+        <TextView
+            android:id="@+id/reminderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reminder Title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#000" />
+
+        <!-- 🚩 Checkbox: Flag -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBoxFlag"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            app:buttonTint="@color/iconAccent"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
+    </LinearLayout>
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/reminderDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reminder description"
+        android:textSize="14sp"
+        android:textColor="#666"
+        android:layout_marginTop="4dp"/>
+</LinearLayout>
