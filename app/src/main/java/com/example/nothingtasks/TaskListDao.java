@@ -12,11 +12,19 @@ import java.util.List;
 public interface TaskListDao {
 
     @Insert
-    void insert(TaskList taskList);
+    long insert(TaskList taskList);  // change from void → long
+
+    @Insert
+    long insertAndReturnId(TaskList taskList); // Add this
+
+
 
     @Delete
     void delete(TaskList taskList);
 
     @Query("SELECT * FROM task_lists ORDER BY id DESC")
     LiveData<List<TaskList>> getAllLists();
+
+    @Query("DELETE FROM task_lists WHERE id = :listId")
+    void deleteListById(int listId);
 }

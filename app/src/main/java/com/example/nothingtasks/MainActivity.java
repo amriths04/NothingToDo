@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Load theme before setContentView
         SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
         boolean isDarkMode = prefs.getBoolean("dark_mode", false);
         AppCompatDelegate.setDefaultNightMode(
@@ -39,20 +38,17 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Settings button
+        // Settings
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         });
 
-        // "+" Add List button
+        // "+" Add List
         ImageButton addListButton = findViewById(R.id.addListButton);
-        addListButton.setOnClickListener(v -> {
-            showAddListDialog();
-        });
+        addListButton.setOnClickListener(v -> showAddListDialog());
 
-        // Apply window insets
+        // Apply edge insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -62,10 +58,23 @@ public class MainActivity extends AppCompatActivity {
         // Setup RecyclerView
         RecyclerView recyclerView = findViewById(R.id.myListsRecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TaskListAdapter();
+
+        adapter = new TaskListAdapter(list -> {
+            if (list != null) {
+                Intent intent = new Intent(MainActivity.this, ListDetailsActivity.class);
+                intent.putExtra("listId", list.getId());
+                intent.putExtra("listName", list.getName());
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "List is null", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
         recyclerView.setAdapter(adapter);
 
-        // Observe LiveData from Room
         TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
         db.taskListDao().getAllLists().observe(this, new Observer<List<TaskList>>() {
             @Override
@@ -79,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("New List");
 
-        // Input fields
         EditText inputName = new EditText(this);
         inputName.setHint("List name");
         inputName.setPadding(40, 30, 40, 10);
@@ -90,13 +98,11 @@ public class MainActivity extends AppCompatActivity {
         inputDesc.setPadding(40, 10, 40, 30);
         inputDesc.setTextSize(14f);
 
-        // Layout wrapper
         LinearLayout container = new LinearLayout(this);
         container.setOrientation(LinearLayout.VERTICAL);
         container.addView(inputName);
         container.addView(inputDesc);
         builder.setView(container);
-
         builder.setPositiveButton("Create", (dialog, which) -> {
             String name = inputName.getText().toString().trim();
             String desc = inputDesc.getText().toString().trim();
@@ -106,15 +112,20 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            int color = 0xFF2196F3; // hardcoded blue
-
+            int color = 0xFF2196F3; // static blue
             TaskList newList = new TaskList(name, desc, color);
+
             new Thread(() -> {
                 TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
-                db.taskListDao().insert(newList);
-            }).start();
 
-            Toast.makeText(this, "List created", Toast.LENGTH_SHORT).show();
+                // ✅ Get inserted ID
+                long id = db.taskListDao().insertAndReturnId(newList);
+                newList.setId((int) id); // Important if you'll use this object later
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "List created", Toast.LENGTH_SHORT).show();
+                });
+            }).start();
         });
 
         builder.setNegativeButton("Cancel", null);

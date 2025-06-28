@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listDetailRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <!-- Top Toolbar -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/background">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/back"
+            app:tint="@color/textPrimary"
+            android:contentDescription="Back" />
+
+        <!-- List Name -->
+        <TextView
+            android:id="@+id/listTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List Name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/nf"
+            android:textColor="@color/textPrimary"
+            android:layout_centerInParent="true" />
+
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/deleteListButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@color/textPrimary"
+            android:contentDescription="Delete List" />
+    </RelativeLayout>
+
+    <!-- Reminder RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/remindersRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar"
+        android:layout_above="@id/bottomBar"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:padding="8dp"
+        android:nestedScrollingEnabled="true" />
+
+    <!-- Bottom Bar -->
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:elevation="8dp">
+
+        <!-- Add Reminder -->
+        <TextView
+            android:id="@+id/addReminderBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Add Reminder"
+            android:textSize="18sp"
+            android:textColor="@color/textPrimary"
+            android:fontFamily="@font/nf"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <!-- Filter Button -->
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            app:tint="@color/textPrimary"
+            android:contentDescription="Filter"
+            android:padding="6dp" />
+    </RelativeLayout>
+</RelativeLayout>

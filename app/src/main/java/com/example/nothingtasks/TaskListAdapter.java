@@ -12,7 +12,17 @@ import java.util.List;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder> {
 
+    public interface OnListClickListener {
+        void onListClick(TaskList list);
+    }
+
     private List<TaskList> taskLists;
+    private final OnListClickListener clickListener;
+
+    // Constructor accepting the click listener
+    public TaskListAdapter(OnListClickListener listener) {
+        this.clickListener = listener;
+    }
 
     public void setTaskLists(List<TaskList> taskLists) {
         this.taskLists = taskLists;
@@ -22,30 +32,34 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     @NonNull
     @Override
     public TaskListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_task_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false);
         return new TaskListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TaskListViewHolder holder, int position) {
         TaskList list = taskLists.get(position);
-        holder.nameText.setText(list.name);
-        holder.descText.setText(list.description != null ? list.description : "");
+        holder.title.setText(list.getName());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onListClick(list);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return taskLists == null ? 0 : taskLists.size();
+        return (taskLists != null) ? taskLists.size() : 0;
     }
 
-    public static class TaskListViewHolder extends RecyclerView.ViewHolder {
-        TextView nameText, descText;
+    static class TaskListViewHolder extends RecyclerView.ViewHolder {
+        TextView title;
 
         public TaskListViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameText = itemView.findViewById(R.id.listName);
-            descText = itemView.findViewById(R.id.listDesc);
+            title = itemView.findViewById(R.id.listName);
+
         }
     }
 }
