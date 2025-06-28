@@ -17,7 +17,7 @@
         android:text="New Reminder"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#000000"
+        android:textColor="?attr/cardTextPrimary"
         android:gravity="center"
         android:fontFamily="@font/nf"
         android:layout_marginBottom="16dp" />
@@ -30,6 +30,9 @@
         android:hint="Title"
         android:textSize="16sp"
         android:fontFamily="@font/nf"
+        android:textColor="?attr/cardTextPrimary"
+        android:textColorHint="@color/textSecondary"
+        android:backgroundTint="@android:color/transparent"
         android:inputType="text" />
 
     <!-- Reminder Description -->
@@ -41,12 +44,15 @@
         android:minLines="2"
         android:maxLines="4"
         android:gravity="top"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:fontFamily="@font/nf"
+        android:textColor="?attr/cardTextPrimary"
+        android:textColorHint="@color/textSecondary"
+        android:backgroundTint="@android:color/transparent"
         android:inputType="textMultiLine"
         android:layout_marginTop="8dp" />
 
-    <!-- Date & Time -->
+    <!-- Date & Time Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +61,7 @@
         android:layout_marginTop="16dp"
         android:weightSum="2">
 
-        <!-- Date -->
+        <!-- Date Picker -->
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -64,9 +70,10 @@
 
             <ImageButton
                 android:id="@+id/pickDateBtn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@android:drawable/ic_menu_my_calendar"
+                android:tint="?attr/cardIconTint"
                 android:background="@android:color/transparent"
                 android:contentDescription="Pick Date" />
 
@@ -76,12 +83,12 @@
                 android:layout_height="wrap_content"
                 android:text="No date"
                 android:textSize="14sp"
-                android:textColor="#444444"
+                android:textColor="?attr/cardTextSecondary"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/nf" />
         </LinearLayout>
 
-        <!-- Time -->
+        <!-- Time Picker -->
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="0dp"
@@ -94,6 +101,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@android:drawable/ic_menu_recent_history"
+                android:tint="?attr/cardIconTint"
                 android:background="@android:color/transparent"
                 android:contentDescription="Pick Time" />
 
@@ -103,13 +111,49 @@
                 android:layout_height="wrap_content"
                 android:text="No time"
                 android:textSize="14sp"
-                android:textColor="#444444"
+                android:textColor="?attr/cardTextSecondary"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/nf" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Buttons Row -->
+    <!-- Date Shortcuts -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp"
+        android:paddingHorizontal="4dp">
+
+        <TextView
+            android:id="@+id/todayShortcut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            android:background="@drawable/tag_background"
+            android:textColor="@color/blueAccent"
+            android:textSize="14sp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:fontFamily="@font/nf"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/clearDateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:background="@drawable/tag_background"
+            android:textColor="@color/textSecondary"
+            android:textSize="14sp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:fontFamily="@font/nf" />
+    </LinearLayout>
+
+    <!-- Bottom Buttons -->
     <LinearLayout
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
@@ -133,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"
-            android:textColor="#007AFF"
+            android:textColor="@color/blueAccent"
             android:textSize="16sp"
             android:fontFamily="@font/nf"
             android:padding="8dp" />

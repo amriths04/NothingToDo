@@ -28,22 +28,25 @@ public class AddReminderDialog {
         ImageButton dateBtn = dialogView.findViewById(R.id.pickDateBtn);
         ImageButton timeBtn = dialogView.findViewById(R.id.pickTimeBtn);
 
+        TextView todayShortcut = dialogView.findViewById(R.id.todayShortcut);
+        TextView clearDateBtn = dialogView.findViewById(R.id.clearDateBtn);
+
         final Calendar selectedCalendar = Calendar.getInstance();
         final boolean[] hasDate = {false};
         final boolean[] hasTime = {false};
 
-        dateBtn.setOnClickListener(v -> {
+        // Shared listener to open DatePickerDialog
+        View.OnClickListener openDatePicker = v -> {
             Calendar now = Calendar.getInstance();
             new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
                 hasDate[0] = true;
-                selectedCalendar.set(Calendar.YEAR, year);
-                selectedCalendar.set(Calendar.MONTH, month);
-                selectedCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                selectedCalendar.set(year, month, dayOfMonth);
                 dateText.setText(String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth));
             }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
-        });
+        };
 
-        timeBtn.setOnClickListener(v -> {
+        // Shared listener to open TimePickerDialog
+        View.OnClickListener openTimePicker = v -> {
             Calendar now = Calendar.getInstance();
             new TimePickerDialog(context, (view, hourOfDay, minute) -> {
                 hasTime[0] = true;
@@ -51,6 +54,29 @@ public class AddReminderDialog {
                 selectedCalendar.set(Calendar.MINUTE, minute);
                 timeText.setText(String.format("%02d:%02d", hourOfDay, minute));
             }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false).show();
+        };
+
+        // Assign shared listeners to both icons and text views
+        dateBtn.setOnClickListener(openDatePicker);
+        dateText.setOnClickListener(openDatePicker);
+
+        timeBtn.setOnClickListener(openTimePicker);
+        timeText.setOnClickListener(openTimePicker);
+
+        todayShortcut.setOnClickListener(v -> {
+            Calendar now = Calendar.getInstance();
+            selectedCalendar.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+            dateText.setText("Today");
+            hasDate[0] = true;
+        });
+
+        clearDateBtn.setOnClickListener(v -> {
+            titleEdit.setText("");
+            descEdit.setText("");
+            dateText.setText("No date");
+            timeText.setText("No time");
+            hasDate[0] = false;
+            hasTime[0] = false;
         });
 
         AlertDialog dialog = new AlertDialog.Builder(context)
@@ -76,15 +102,16 @@ public class AddReminderDialog {
                         selectedCalendar.get(Calendar.MONTH) + 1,
                         selectedCalendar.get(Calendar.DAY_OF_MONTH),
                         selectedCalendar.get(Calendar.HOUR_OF_DAY),
-                        selectedCalendar.get(Calendar.MINUTE)
-                );
+                        selectedCalendar.get(Calendar.MINUTE));
             }
 
             listener.onReminderAdded(title, desc, dateTime);
             dialog.dismiss();
         });
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
         dialog.show();
     }
 }

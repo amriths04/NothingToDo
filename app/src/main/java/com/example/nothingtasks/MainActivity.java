@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -48,6 +49,23 @@ public class MainActivity extends AppCompatActivity {
         ImageButton addListButton = findViewById(R.id.addListButton);
         addListButton.setOnClickListener(v -> showAddListDialog());
 
+        // "+ New Reminder" from bottom bar
+        TextView newReminderText = findViewById(R.id.newReminderText);
+        newReminderText.setOnClickListener(v -> {
+            AddReminderDialog.show(MainActivity.this, (title, desc, dateTime) -> {
+                Reminder reminder = new Reminder(title, desc, false, false, dateTime, null); // ✅ fixed order
+
+                new Thread(() -> {
+                    TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
+                    db.reminderDao().insert(reminder);
+
+                    runOnUiThread(() -> {
+                        Toast.makeText(MainActivity.this, "Reminder added", Toast.LENGTH_SHORT).show();
+                    });
+                }).start();
+            });
+        });
+
         // Apply edge insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -69,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "List is null", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
 
         recyclerView.setAdapter(adapter);
 
@@ -117,10 +132,8 @@ public class MainActivity extends AppCompatActivity {
 
             new Thread(() -> {
                 TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
-
-                // ✅ Get inserted ID
                 long id = db.taskListDao().insertAndReturnId(newList);
-                newList.setId((int) id); // Important if you'll use this object later
+                newList.setId((int) id);
 
                 runOnUiThread(() -> {
                     Toast.makeText(this, "List created", Toast.LENGTH_SHORT).show();
