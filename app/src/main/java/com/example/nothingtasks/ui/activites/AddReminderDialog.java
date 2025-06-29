@@ -87,6 +87,8 @@ public class AddReminderDialog {
             dateText.setText("Today");
             hasDate[0] = true;
             hasTime[0] = false;
+            todayShortcut.setSelected(true);
+            clearDateBtn.setSelected(false); // optional
         });
 
         clearDateBtn.setOnClickListener(v -> {
@@ -96,6 +98,7 @@ public class AddReminderDialog {
             timeText.setText("No time");
             hasDate[0] = false;
             hasTime[0] = false;
+            todayShortcut.setSelected(false);
         });
 
         AlertDialog dialog = new AlertDialog.Builder(context)

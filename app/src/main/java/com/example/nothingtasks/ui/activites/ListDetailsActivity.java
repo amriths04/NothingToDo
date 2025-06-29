@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.example.nothingtasks.ui.adapters.ReminderAdapter;
 import com.example.nothingtasks.data.db.ReminderDao;
 import com.example.nothingtasks.data.db.TaskDatabase;
 import com.example.nothingtasks.data.model.Reminder;
+import com.google.android.material.snackbar.Snackbar;
 
 public class ListDetailsActivity extends AppCompatActivity {
 
@@ -36,6 +38,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_details);
@@ -45,7 +48,7 @@ public class ListDetailsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        View emptyStateView = findViewById(R.id.emptyStateView);
         // Get list ID and name from Intent
         listId = getIntent().getIntExtra("listId", -1);
         listName = getIntent().getStringExtra("listName");
@@ -90,7 +93,14 @@ public class ListDetailsActivity extends AppCompatActivity {
         // Observe reminders
         reminderDao.getRemindersByList(listId).observe(this, reminders -> {
             reminderAdapter.setReminders(reminders);
+
+            if (reminders == null || reminders.isEmpty()) {
+                emptyStateView.setVisibility(View.VISIBLE);
+            } else {
+                emptyStateView.setVisibility(View.GONE);
+            }
         });
+
 
         // ✅ Add swipe-to-delete support
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
@@ -106,8 +116,43 @@ public class ListDetailsActivity extends AppCompatActivity {
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                         int position = viewHolder.getAdapterPosition();
                         Reminder reminderToDelete = reminderAdapter.getReminderAt(position);
-                        new Thread(() -> reminderDao.delete(reminderToDelete)).start();
+                        viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                        // Fade-out animation before actual removal
+                        View itemView = viewHolder.itemView;
+                        itemView.animate()
+                                .alpha(0f)
+                                .setDuration(200)
+                                .withEndAction(() -> {
+                                    // Remove from adapter list + DB
+                                    reminderAdapter.getReminders().remove(position);
+                                    reminderAdapter.notifyItemRemoved(position);
+
+                                    new Thread(() -> reminderDao.delete(reminderToDelete)).start();
+
+                                    // Show styled Snackbar for Undo
+                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.listDetailRoot), "Reminder deleted", Snackbar.LENGTH_LONG)
+                                            .setAction("UNDO", v -> {
+                                                // Re-insert if Undo tapped
+                                                new Thread(() -> reminderDao.insert(reminderToDelete)).start();
+                                            })
+                                            .setAnchorView(R.id.bottomBar);
+
+                                    // Styling
+                                    View sbView = snackbar.getView();
+                                    sbView.setBackgroundColor(Color.parseColor("#333333")); // dark bg
+                                    TextView sbText = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+                                    sbText.setTextColor(Color.WHITE);
+                                    sbText.setTextSize(14f);
+                                    sbText.setTypeface(getResources().getFont(R.font.nf)); // 🧠 Requires nf.ttf in font folder
+
+                                    TextView sbAction = sbView.findViewById(com.google.android.material.R.id.snackbar_action);
+                                    sbAction.setTextColor(Color.parseColor("#2196F3")); // accent blue
+
+                                    snackbar.show();
+                                });
                     }
+
+
 
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
@@ -116,7 +161,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
                         // Background color
                         Paint paint = new Paint();
-                        paint.setColor(Color.parseColor("#F44336")); // red
+                        paint.setColor(ContextCompat.getColor(ListDetailsActivity.this, R.color.flagRed));
 
                         View itemView = viewHolder.itemView;
                         c.drawRect(itemView.getLeft(), itemView.getTop(),

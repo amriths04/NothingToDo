@@ -66,6 +66,35 @@
         android:padding="8dp"
         android:nestedScrollingEnabled="true" />
 
+    <!-- Empty State View -->
+    <LinearLayout
+        android:id="@+id/emptyStateView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topBar"
+        android:layout_above="@id/bottomBar"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="32dp">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/add"
+            app:tint="?attr/cardIconTint"
+            android:contentDescription="Empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No reminders yet!"
+            android:textSize="16sp"
+            android:textColor="?attr/cardTextSecondary"
+            android:fontFamily="@font/nf"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+
     <!-- Bottom Bar -->
     <RelativeLayout
         android:id="@+id/bottomBar"

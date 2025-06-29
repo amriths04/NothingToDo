@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No date"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textColor="?attr/cardTextSecondary"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/nf" />
@@ -125,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No time"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textColor="?attr/cardTextSecondary"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/nf" />
@@ -147,20 +147,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Today"
-            android:background="@drawable/tag_background"
+            android:background="@drawable/pill_border"
             android:textColor="?attr/cardTextSecondary"
             android:textSize="14sp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
             android:fontFamily="@font/nf"
-            android:layout_marginEnd="12dp" />
+            android:layout_marginEnd="12dp"
+            android:clickable="true"
+            android:focusable="true" />
+
 
         <TextView
             android:id="@+id/clearDateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear"
-            android:background="@drawable/tag_background"
+            android:background="@drawable/pill_border"
             android:textColor="?attr/cardTextSecondary"
             android:textSize="14sp"
             android:paddingHorizontal="12dp"
@@ -172,7 +175,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginStart="12dp">
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="-4dp">
 
             <TextView
                 android:layout_width="wrap_content"
