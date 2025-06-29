@@ -22,7 +22,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     private List<TaskList> taskLists;
     private final OnListClickListener clickListener;
 
-    // Constructor accepting the click listener
     public TaskListAdapter(OnListClickListener listener) {
         this.clickListener = listener;
     }
@@ -43,6 +42,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     public void onBindViewHolder(@NonNull TaskListViewHolder holder, int position) {
         TaskList list = taskLists.get(position);
         holder.title.setText(list.getName());
+        holder.desc.setText(list.getDescription());
+
+        // Get first capital letter for the icon
+        String name = list.getName();
+        String firstLetter = (name != null && !name.isEmpty()) ? name.substring(0, 1).toUpperCase() : "?";
+        holder.icon.setText(firstLetter);
 
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
@@ -57,12 +62,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     }
 
     static class TaskListViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        TextView title, desc, icon;
 
         public TaskListViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.listName);
-
+            desc = itemView.findViewById(R.id.listDesc);
+            icon = itemView.findViewById(R.id.listIconLetter);
         }
     }
 }

@@ -210,48 +210,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAddListDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("New List");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+        View view = getLayoutInflater().inflate(R.layout.dialog_add_list, null);
 
-        EditText inputName = new EditText(this);
-        inputName.setHint("List name");
-        inputName.setPadding(40, 30, 40, 10);
-        inputName.setTextSize(16f);
+        EditText inputName = view.findViewById(R.id.listNameInput);
+        EditText inputDesc = view.findViewById(R.id.listDescInput);
+        TextView cancelBtn = view.findViewById(R.id.cancelBtn);
+        TextView addBtn = view.findViewById(R.id.addBtn);
 
-        EditText inputDesc = new EditText(this);
-        inputDesc.setHint("Optional description");
-        inputDesc.setPadding(40, 10, 40, 30);
-        inputDesc.setTextSize(14f);
+        AlertDialog dialog = builder.setView(view).create();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show();
 
-        LinearLayout container = new LinearLayout(this);
-        container.setOrientation(LinearLayout.VERTICAL);
-        container.addView(inputName);
-        container.addView(inputDesc);
-        builder.setView(container);
+        cancelBtn.setOnClickListener(v -> dialog.dismiss());
 
-        builder.setPositiveButton("Create", (dialog, which) -> {
+        addBtn.setOnClickListener(v -> {
             String name = inputName.getText().toString().trim();
             String desc = inputDesc.getText().toString().trim();
 
             if (TextUtils.isEmpty(name)) {
-                Toast.makeText(this, "List name can't be empty", Toast.LENGTH_SHORT).show();
+                inputName.setError("List name is required");
                 return;
             }
 
-            int color = 0xFF2196F3;
-            TaskList newList = new TaskList(name, desc, color);
+            TaskList newList = new TaskList(name, desc);
 
             new Thread(() -> {
-                long id = db.taskListDao().insertAndReturnId(newList);
+                long id = db.taskListDao().insert(newList); // updated method name
                 newList.setId((int) id);
-                runOnUiThread(() ->
-                        Toast.makeText(this, "List created", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "List created", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                });
             }).start();
         });
-
-        builder.setNegativeButton("Cancel", null);
-        builder.show();
     }
+
 
     // ✅ Clean up handler to avoid memory leaks
     @Override

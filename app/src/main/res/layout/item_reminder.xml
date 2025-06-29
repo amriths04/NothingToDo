@@ -23,7 +23,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
-            app:buttonTint="@color/iconAccent"
+            app:buttonTint="?attr/cardIconTint"
             android:focusable="false"
             android:focusableInTouchMode="false" />
 
@@ -44,7 +44,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="8dp"
-            app:buttonTint="@color/iconAccent"
+            app:buttonTint="?attr/cardIconTint"
             android:focusable="false"
             android:focusableInTouchMode="false" />
     </LinearLayout>

@@ -7,49 +7,22 @@ import androidx.room.PrimaryKey;
 public class TaskList {
 
     @PrimaryKey(autoGenerate = true)
-    public int id; // ← make it public (just this)
+    public int id;
 
     private String name;
     private String description;
-    private int color;
 
-    // Constructor required by Room
-    public TaskList(String name, String description, int color) {
+    public TaskList(String name, String description) {
         this.name = name;
         this.description = description;
-        this.color = color;
     }
 
-    // Room needs this
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
+    public int getId() { return id; }
 
-    public int getId() {
-        return id;
-    }
+    public String getName() { return name; }
+    public String getDescription() { return description; }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
+    public void setName(String name) { this.name = name; }
+    public void setDescription(String description) { this.description = description; }
 }

@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.example.nothingtasks.data.model.Reminder;
 import com.example.nothingtasks.data.model.TaskList;
 
-@Database(entities = {TaskList.class, Reminder.class}, version = 1)
+@Database(entities = {TaskList.class, Reminder.class}, version = 2, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
 
     private static TaskDatabase instance;
@@ -23,7 +23,8 @@ public abstract class TaskDatabase extends RoomDatabase {
                             context.getApplicationContext(),
                             TaskDatabase.class,
                             "task_database"
-                    ).fallbackToDestructiveMigration()
+                    )
+                    .fallbackToDestructiveMigration()
                     .build();
         }
         return instance;

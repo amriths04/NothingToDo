@@ -1,10 +1,10 @@
 <!-- res/values-night/themes.xml -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.NothingTasks" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Dark Mode Custom Colors -->
-        <item name="cardBackgroundColor">#1C1C1E</item>
-        <item name="cardTextPrimary">#FFFFFF</item>
-        <item name="cardTextSecondary">#BBBBBB</item>
-        <item name="cardIconTint">#0A84FF</item>
+        <item name="cardBackgroundColor">@color/background</item>      <!-- dark background -->
+        <item name="cardTextPrimary">@color/textPrimary</item>         <!-- white text -->
+        <item name="cardTextSecondary">@color/textSecondary</item>     <!-- lighter grey -->
+        <item name="cardIconTint">@color/textPrimary</item>            <!-- white icon circle -->
     </style>
 </resources>
+

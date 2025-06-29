@@ -1,18 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="4dp"
-    android:padding="16dp">
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="12dp"
+    app:cardElevation="6dp"
+    app:cardCornerRadius="16dp"
+    android:background="?attr/cardBackgroundColor"
+    android:padding="20dp">
 
-    <TextView
-        android:id="@+id/listName"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="List Name"
-        android:textSize="18sp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Icon Circle with First Letter -->
+        <TextView
+            android:id="@+id/listIconLetter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:background="@drawable/circle_bg"
+            android:text="A"
+            android:textSize="20sp"
+            android:textColor="?attr/cardBackgroundColor"
+        android:fontFamily="@font/nf"
         android:textStyle="bold" />
+
+        <!-- Vertical container for text -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/listName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List Title"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/nf"
+                android:textColor="?attr/cardTextPrimary" />
+
+            <TextView
+                android:id="@+id/listDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description (optional)"
+                android:textSize="14sp"
+                android:fontFamily="@font/nf"
+                android:textColor="?attr/cardTextSecondary"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

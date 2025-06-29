@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#F2F2F7</color>
-    <color name="textPrimary">#000000</color>
-    <color name="textSecondary">#888888</color>
-    <color name="blueAccent">#007AFF</color>
-    <color name="iconAccent">#007AFF</color>
+    <color name="background">#F2F2F7</color>       <!-- light grey background -->
+    <color name="textPrimary">#000000</color>      <!-- black primary text -->
+    <color name="textSecondary">#888888</color>    <!-- light grey secondary text -->
+    <color name="flagRed">#FF3B30</color>           <!-- red for flags/errors -->
 </resources>

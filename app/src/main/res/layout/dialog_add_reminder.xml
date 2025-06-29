@@ -31,7 +31,7 @@
         android:textSize="16sp"
         android:fontFamily="@font/nf"
         android:textColor="?attr/cardTextPrimary"
-        android:textColorHint="@color/textSecondary"
+        android:textColorHint="?attr/cardTextSecondary"
         android:backgroundTint="@android:color/transparent"
         android:inputType="text" />
 
@@ -47,7 +47,7 @@
         android:textSize="16sp"
         android:fontFamily="@font/nf"
         android:textColor="?attr/cardTextPrimary"
-        android:textColorHint="@color/textSecondary"
+        android:textColorHint="?attr/cardTextSecondary"
         android:backgroundTint="@android:color/transparent"
         android:inputType="textMultiLine"
         android:layout_marginTop="8dp" />
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:text="Today"
             android:background="@drawable/tag_background"
-            android:textColor="@color/blueAccent"
+            android:textColor="?attr/cardTextSecondary"
             android:textSize="14sp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:text="Clear"
             android:background="@drawable/tag_background"
-            android:textColor="@color/textSecondary"
+            android:textColor="?attr/cardTextSecondary"
             android:textSize="14sp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
@@ -209,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"
-            android:textColor="@color/blueAccent"
+            android:textColor="?attr/cardTextPrimary"
             android:textSize="16sp"
             android:fontFamily="@font/nf"
             android:padding="8dp" />

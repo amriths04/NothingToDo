@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="16dp"
+    android:background="@drawable/rounded_dialog_bg"
+    android:fontFamily="@font/nf">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New List"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="?attr/cardTextPrimary"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/listNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="List name"
+        android:textSize="16sp"
+        android:textColor="?attr/cardTextPrimary"
+        android:textColorHint="?attr/cardTextSecondary"
+        android:backgroundTint="@android:color/transparent"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/listDescInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description (optional)"
+        android:minLines="2"
+        android:maxLines="4"
+        android:gravity="top"
+        android:textSize="16sp"
+        android:textColor="?attr/cardTextPrimary"
+        android:textColorHint="?attr/cardTextSecondary
+"
+        android:backgroundTint="@android:color/transparent"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="8dp" />
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#FF3B30"
+            android:textSize="16sp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:textColor="?attr/cardIconTint"
+            android:textSize="16sp"
+            android:padding="8dp" />
+
+    </LinearLayout>
+</LinearLayout>

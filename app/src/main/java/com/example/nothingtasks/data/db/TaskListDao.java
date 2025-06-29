@@ -14,12 +14,7 @@ import java.util.List;
 public interface TaskListDao {
 
     @Insert
-    long insert(TaskList taskList);  // change from void → long
-
-    @Insert
-    long insertAndReturnId(TaskList taskList); // Add this
-
-
+    long insert(TaskList taskList); // ✅ Return ID if needed
 
     @Delete
     void delete(TaskList taskList);
