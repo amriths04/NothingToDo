@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#F2F2F7</color>       <!-- light grey background -->
+    <color name="background">#F2F1F6</color>
+    <color name="secbackground">#FFFFFF</color> <!-- light grey background -->
     <color name="textPrimary">#000000</color>      <!-- black primary text -->
-    <color name="textSecondary">#888888</color>    <!-- light grey secondary text -->
-    <color name="flagRed">#FF3B30</color>           <!-- red for flags/errors -->
+    <color name="textSecondary">#1D1C1F</color>    <!-- light grey secondary text -->
+    <color name="flagRed">#D61B21</color>           <!-- red for flags/errors -->
 </resources>

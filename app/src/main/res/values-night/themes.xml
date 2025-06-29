@@ -4,7 +4,8 @@
         <item name="cardBackgroundColor">@color/background</item>      <!-- dark background -->
         <item name="cardTextPrimary">@color/textPrimary</item>         <!-- white text -->
         <item name="cardTextSecondary">@color/textSecondary</item>     <!-- lighter grey -->
-        <item name="cardIconTint">@color/textPrimary</item>            <!-- white icon circle -->
+        <item name="cardIconTint">@color/flagRed</item>
+        <item name="secbg">@color/secbackground</item>
     </style>
 </resources>
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#121212</color>       <!-- dark background -->
+    <color name="background">#010001</color>       <!-- dark background -->
+    <color name="secbackground">#1D1C1F</color>       <!-- dark background -->
     <color name="textPrimary">#FFFFFF</color>      <!-- white primary text -->
     <color name="textSecondary">#B3B3B3</color>    <!-- lighter grey secondary -->
-    <color name="flagRed">#FF453A</color>           <!-- red for dark mode -->
+    <color name="flagRed">#D61B21</color>           <!-- red for dark mode -->
 </resources>

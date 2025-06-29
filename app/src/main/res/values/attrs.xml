@@ -5,4 +5,5 @@
     <attr name="cardTextPrimary" format="color" />
     <attr name="cardTextSecondary" format="color" />
     <attr name="cardIconTint" format="color" />
+    <attr name="secbg" format="color" />
 </resources>
