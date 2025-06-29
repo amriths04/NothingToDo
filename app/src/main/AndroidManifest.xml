@@ -13,7 +13,7 @@
         android:theme="@style/Theme.NothingTasks"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activites.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".ListDetailsActivity" />
-        <activity android:name=".GridActivity" />
+        <activity android:name=".ui.activites.SettingsActivity" />
+        <activity android:name=".ui.activites.ListDetailsActivity" />
+        <activity android:name=".ui.activites.GridActivity" />
     </application>
 
 </manifest>

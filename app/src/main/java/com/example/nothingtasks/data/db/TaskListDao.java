@@ -1,10 +1,12 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.data.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Delete;
+
+import com.example.nothingtasks.data.model.TaskList;
 
 import java.util.List;
 

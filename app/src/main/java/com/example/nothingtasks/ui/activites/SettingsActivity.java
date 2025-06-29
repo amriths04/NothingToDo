@@ -1,4 +1,4 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.ui.activites;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.nothingtasks.R;
 
 public class SettingsActivity extends AppCompatActivity {
 

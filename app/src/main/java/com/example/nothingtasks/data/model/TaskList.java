@@ -1,4 +1,4 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.data.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

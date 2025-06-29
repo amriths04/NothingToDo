@@ -1,4 +1,4 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.ui.activites;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,6 +12,8 @@ import android.widget.*;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+
+import com.example.nothingtasks.R;
 
 import java.util.Calendar;
 

@@ -1,4 +1,4 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.ui.activites;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -23,6 +23,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nothingtasks.R;
+import com.example.nothingtasks.ui.adapters.TaskListAdapter;
+import com.example.nothingtasks.data.db.ReminderDao;
+import com.example.nothingtasks.data.db.TaskDatabase;
+import com.example.nothingtasks.data.model.Reminder;
+import com.example.nothingtasks.data.model.TaskList;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.ui.adapters;
 
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.nothingtasks.R;
+import com.example.nothingtasks.data.db.ReminderDao;
+import com.example.nothingtasks.data.model.Reminder;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
 import androidx.annotation.NonNull;

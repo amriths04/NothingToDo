@@ -1,4 +1,4 @@
-package com.example.nothingtasks;
+package com.example.nothingtasks.data.model;
 
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
