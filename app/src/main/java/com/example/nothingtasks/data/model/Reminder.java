@@ -34,4 +34,16 @@ public class Reminder {
         this.listId = listId;
         this.repeat = repeat;
     }
+    // Defensive copy constructor (for Undo)
+    public Reminder(Reminder other) {
+        this.id = other.id;
+        this.title = other.title;
+        this.description = other.description;
+        this.isDone = other.isDone;
+        this.isFlagged = other.isFlagged;
+        this.date = other.date;
+        this.listId = other.listId;
+        this.repeat = other.repeat;
+    }
+
 }

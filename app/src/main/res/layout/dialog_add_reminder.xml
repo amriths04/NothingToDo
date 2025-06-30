@@ -68,19 +68,19 @@
         android:layout_marginTop="1dp"
         android:background="@drawable/dotted_underline" />
     <!-- Date & Time Section -->
+    <!-- Date Accordion Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="10dp"
-        android:weightSum="2">
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
 
-        <!-- Date Picker -->
+        <!-- Date Trigger Row -->
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:id="@+id/dateRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="center_vertical">
 
             <ImageButton
@@ -103,18 +103,43 @@
                 android:fontFamily="@font/nf" />
         </LinearLayout>
 
-        <!-- Time Picker -->
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
+        <!-- Collapsible DatePicker -->
+        <FrameLayout
+            android:id="@+id/datePickerContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginStart="16dp">
+            android:visibility="gone">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false"
+                android:spinnersShown="true"
+                android:theme="@style/SpinnerDatePicker" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Time Accordion Section -->
+    <!-- Time Accordion Section -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <!-- Time Trigger Row -->
+        <LinearLayout
+            android:id="@+id/timeRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <ImageButton
                 android:id="@+id/pickTimeBtn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@android:drawable/ic_menu_recent_history"
                 android:tint="?attr/cardIconTint"
                 android:background="@android:color/transparent"
@@ -130,7 +155,26 @@
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/nf" />
         </LinearLayout>
+
+        <!-- Collapsible TimePicker -->
+        <FrameLayout
+            android:id="@+id/timePickerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:theme="@style/TimePickerDarkStyle"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/nf" />
+        </FrameLayout>
     </LinearLayout>
+
+
 
     <!-- Date Shortcuts -->
     <LinearLayout

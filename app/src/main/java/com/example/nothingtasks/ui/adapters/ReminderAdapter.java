@@ -32,9 +32,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         this.reminderDao = dao;
     }
 
-    public void setReminders(List<Reminder> reminders) {
-        this.reminders = reminders;
-        notifyItemRangeChanged(0, reminders.size());
+    public void setReminders(List<Reminder> newReminders) {
+        this.reminders.clear();
+        this.reminders.addAll(newReminders);
+        notifyDataSetChanged();
     }
 
     public Reminder getReminderAt(int position) {
@@ -104,6 +105,13 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             } else {
                 holder.date.setVisibility(View.GONE);
             }
+        }
+    }
+    public void removeReminder(Reminder reminder) {
+        int index = reminders.indexOf(reminder);
+        if (index != -1) {
+            reminders.remove(index);
+            notifyItemRemoved(index);
         }
     }
 

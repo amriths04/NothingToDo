@@ -82,15 +82,15 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:src="@drawable/add"
-            app:tint="?attr/cardIconTint"
-            android:contentDescription="Empty" />
+            android:contentDescription="Empty"
+            android:tint="@color/flagRed" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No reminders yet!"
             android:textSize="16sp"
-            android:textColor="?attr/cardTextSecondary"
+            android:textColor="?attr/cardIconTint"
             android:fontFamily="@font/nf"
             android:layout_marginTop="16dp"/>
     </LinearLayout>
@@ -118,6 +118,8 @@
             android:textColor="?attr/cardTextPrimary"
             android:fontFamily="@font/nf"
             android:layout_alignParentStart="true"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:layout_centerVertical="true" />
 
         <!-- Filter Button -->

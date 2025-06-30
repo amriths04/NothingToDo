@@ -1,13 +1,10 @@
 package com.example.nothingtasks.ui.activites;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
+import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.*;
 
 import androidx.annotation.Nullable;
@@ -30,14 +27,23 @@ public class AddReminderDialog {
         EditText descEdit = dialogView.findViewById(R.id.reminderDesc);
         TextView dateText = dialogView.findViewById(R.id.dateText);
         TextView timeText = dialogView.findViewById(R.id.timeText);
-        ImageButton dateBtn = dialogView.findViewById(R.id.pickDateBtn);
-        ImageButton timeBtn = dialogView.findViewById(R.id.pickTimeBtn);
-
         Spinner repeatSpinner = dialogView.findViewById(R.id.repeatSpinner);
         TextView todayShortcut = dialogView.findViewById(R.id.todayShortcut);
         TextView clearDateBtn = dialogView.findViewById(R.id.clearDateBtn);
 
-        // Set custom spinner adapter with nf font
+        // Updated: use containers
+        FrameLayout datePickerContainer = dialogView.findViewById(R.id.datePickerContainer);
+        FrameLayout timePickerContainer = dialogView.findViewById(R.id.timePickerContainer);
+        DatePicker datePicker = dialogView.findViewById(R.id.datePicker);
+        TimePicker timePicker = dialogView.findViewById(R.id.timePicker);
+
+        ImageButton pickDateBtn = dialogView.findViewById(R.id.pickDateBtn);
+        ImageButton pickTimeBtn = dialogView.findViewById(R.id.pickTimeBtn);
+
+        final Calendar selectedCalendar = Calendar.getInstance();
+        final boolean[] hasDate = {false};
+
+        // Spinner setup
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 context,
                 R.array.repeat_options,
@@ -46,58 +52,64 @@ public class AddReminderDialog {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_nf);
         repeatSpinner.setAdapter(adapter);
 
-        final Calendar selectedCalendar = Calendar.getInstance();
-        final boolean[] hasDate = {false};
-        final boolean[] hasTime = {false};
-
-        // Date picker
-        View.OnClickListener openDatePicker = v -> {
-            Calendar now = Calendar.getInstance();
-            new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
-                hasDate[0] = true;
-                selectedCalendar.set(year, month, dayOfMonth);
-                selectedCalendar.set(Calendar.HOUR_OF_DAY, 0);   // reset time
-                selectedCalendar.set(Calendar.MINUTE, 0);
-                dateText.setText(String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth));
-            }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
+        // Accordion toggle
+        View.OnClickListener toggleDatePicker = v -> {
+            if (datePickerContainer.getVisibility() == View.VISIBLE) {
+                collapse(datePickerContainer);
+            } else {
+                if (timePickerContainer.getVisibility() == View.VISIBLE) collapse(timePickerContainer);
+                expand(datePickerContainer);
+                int day = datePicker.getDayOfMonth();
+                int month = datePicker.getMonth() + 1;
+                int year = datePicker.getYear();
+                dateText.setText(String.format("%04d-%02d-%02d", year, month, day));
+            }
         };
 
-        // Time picker
-        View.OnClickListener openTimePicker = v -> {
-            Calendar now = Calendar.getInstance();
-            new TimePickerDialog(context, (view, hourOfDay, minute) -> {
-                hasTime[0] = true;
-                selectedCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                selectedCalendar.set(Calendar.MINUTE, minute);
-                timeText.setText(String.format("%02d:%02d", hourOfDay, minute));
-            }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false).show();
+        View.OnClickListener toggleTimePicker = v -> {
+            if (timePickerContainer.getVisibility() == View.VISIBLE) {
+                collapse(timePickerContainer);
+            } else {
+                if (datePickerContainer.getVisibility() == View.VISIBLE) collapse(datePickerContainer);
+                expand(timePickerContainer);
+                int hour = timePicker.getHour();
+                int minute = timePicker.getMinute();
+                String ampm = hour >= 12 ? "PM" : "AM";
+                int hour12 = (hour % 12 == 0) ? 12 : hour % 12;
+                timeText.setText(String.format("%02d:%02d %s", hour12, minute, ampm));
+            }
         };
 
-        dateBtn.setOnClickListener(openDatePicker);
-        dateText.setOnClickListener(openDatePicker);
+        pickDateBtn.setOnClickListener(toggleDatePicker);
+        dateText.setOnClickListener(toggleDatePicker);
+        pickTimeBtn.setOnClickListener(toggleTimePicker);
+        timeText.setOnClickListener(toggleTimePicker);
 
-        timeBtn.setOnClickListener(openTimePicker);
-        timeText.setOnClickListener(openTimePicker);
+        // Live updates
+        datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
+            dateText.setText(String.format("%04d-%02d-%02d", year, monthOfYear + 1, dayOfMonth));
+        });
+
+        timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
+            String ampm = hourOfDay >= 12 ? "PM" : "AM";
+            int hour12 = (hourOfDay % 12 == 0) ? 12 : hourOfDay % 12;
+            timeText.setText(String.format("%02d:%02d %s", hour12, minute, ampm));
+        });
 
         todayShortcut.setOnClickListener(v -> {
             Calendar now = Calendar.getInstance();
             selectedCalendar.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
-            selectedCalendar.set(Calendar.HOUR_OF_DAY, 0);   // reset time to start of today
-            selectedCalendar.set(Calendar.MINUTE, 0);
             dateText.setText("Today");
             hasDate[0] = true;
-            hasTime[0] = false;
             todayShortcut.setSelected(true);
-            clearDateBtn.setSelected(false); // optional
+            clearDateBtn.setSelected(false);
         });
 
         clearDateBtn.setOnClickListener(v -> {
             titleEdit.setText("");
             descEdit.setText("");
             dateText.setText("No date");
-            timeText.setText("No time");
             hasDate[0] = false;
-            hasTime[0] = false;
             todayShortcut.setSelected(false);
         });
 
@@ -118,13 +130,17 @@ public class AddReminderDialog {
             }
 
             String dateTime = null;
-            if (hasDate[0] || hasTime[0]) {
+            if (datePickerContainer.getVisibility() == View.VISIBLE || timePickerContainer.getVisibility() == View.VISIBLE) {
+                selectedCalendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+                selectedCalendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
+                selectedCalendar.set(Calendar.MINUTE, timePicker.getMinute());
+
                 dateTime = String.format("%04d-%02d-%02d %02d:%02d",
                         selectedCalendar.get(Calendar.YEAR),
                         selectedCalendar.get(Calendar.MONTH) + 1,
                         selectedCalendar.get(Calendar.DAY_OF_MONTH),
-                        selectedCalendar.get(Calendar.HOUR_OF_DAY),
-                        selectedCalendar.get(Calendar.MINUTE));
+                        timePicker.getHour(),
+                        timePicker.getMinute());
             }
 
             String repeat = repeatSpinner.getSelectedItem().toString();
@@ -146,5 +162,53 @@ public class AddReminderDialog {
             int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.97);
             window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
+    }
+
+    private static void expand(View view) {
+        view.setVisibility(View.VISIBLE);
+        view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int targetHeight = view.getMeasuredHeight();
+
+        view.getLayoutParams().height = 0;
+        view.requestLayout();
+
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                view.getLayoutParams().height = (interpolatedTime == 1)
+                        ? ViewGroup.LayoutParams.WRAP_CONTENT
+                        : (int) (targetHeight * interpolatedTime);
+                view.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+        a.setDuration(200);
+        view.startAnimation(a);
+    }
+
+    private static void collapse(View view) {
+        final int initialHeight = view.getHeight();
+        Animation a = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                if (interpolatedTime == 1) {
+                    view.setVisibility(View.GONE);
+                } else {
+                    view.getLayoutParams().height = initialHeight - (int) (initialHeight * interpolatedTime);
+                    view.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+        a.setDuration(200);
+        view.startAnimation(a);
     }
 }

@@ -124,8 +124,8 @@ public class ListDetailsActivity extends AppCompatActivity {
                                 .setDuration(200)
                                 .withEndAction(() -> {
                                     // Remove from adapter list + DB
-                                    reminderAdapter.getReminders().remove(position);
-                                    reminderAdapter.notifyItemRemoved(position);
+                                    reminderAdapter.removeReminder(reminderToDelete);
+
 
                                     new Thread(() -> reminderDao.delete(reminderToDelete)).start();
 

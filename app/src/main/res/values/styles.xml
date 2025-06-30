@@ -6,6 +6,12 @@
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:background">@android:color/transparent</item>
     </style>
-
+    <style name="TimePickerDarkStyle" parent="ThemeOverlay.MaterialComponents.TimePicker">
+        <item name="android:textColorPrimary">?attr/cardTextPrimary</item>
+        <item name="android:background">?attr/background</item>
+    </style>
+    <style name="SpinnerDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
 
 </resources>
