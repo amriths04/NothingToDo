@@ -1,9 +1,11 @@
 package com.example.nothingtasks.ui.adapters;
 
 import android.graphics.Paint;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,7 +60,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         holder.description.setText(reminder.description);
 
         holder.checkBox.setChecked(reminder.isDone);
-        holder.flagBox.setChecked(reminder.isFlagged);
 
         // Check if expanded
         boolean isExpanded = expandedPositions.contains(position);
@@ -86,16 +87,24 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
         // Toggle isDone
         holder.checkBox.setOnClickListener(v -> {
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             reminder.isDone = holder.checkBox.isChecked();
             new Thread(() -> reminderDao.update(reminder)).start();
             notifyItemChanged(position);
         });
 
         // Toggle isFlagged
-        holder.flagBox.setOnClickListener(v -> {
-            reminder.isFlagged = holder.flagBox.isChecked();
+        // Set correct flag icon
+        holder.flagIcon.setImageResource(reminder.isFlagged ? R.drawable.bb : R.drawable.aa);
+
+// Toggle on click
+        holder.flagIcon.setOnClickListener(v -> {
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+            reminder.isFlagged = !reminder.isFlagged;
             new Thread(() -> reminderDao.update(reminder)).start();
+            notifyItemChanged(position);
         });
+
 
         // If date field is present
         if (holder.date != null) {
@@ -126,7 +135,9 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
     static class ReminderViewHolder extends RecyclerView.ViewHolder {
         TextView title, description, date;
-        MaterialCheckBox checkBox, flagBox;
+        MaterialCheckBox checkBox;
+        ImageView flagIcon;
+
         LinearLayout expandedSection;
 
         public ReminderViewHolder(@NonNull View itemView) {
@@ -134,7 +145,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             title = itemView.findViewById(R.id.reminderTitle);
             description = itemView.findViewById(R.id.reminderDescription);
             checkBox = itemView.findViewById(R.id.checkBoxDone);
-            flagBox = itemView.findViewById(R.id.checkBoxFlag);
+            flagIcon = itemView.findViewById(R.id.flagIcon);
             expandedSection = itemView.findViewById(R.id.expandedSection);
             date = itemView.findViewById(R.id.reminderDate); // optional, safe to null-check
         }

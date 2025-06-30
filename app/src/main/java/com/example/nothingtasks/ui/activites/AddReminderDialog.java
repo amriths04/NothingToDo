@@ -130,7 +130,7 @@ public class AddReminderDialog {
             }
 
             String dateTime = null;
-            if (datePickerContainer.getVisibility() == View.VISIBLE || timePickerContainer.getVisibility() == View.VISIBLE) {
+            if (hasDate[0]) {
                 selectedCalendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
                 selectedCalendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
                 selectedCalendar.set(Calendar.MINUTE, timePicker.getMinute());
@@ -142,6 +142,7 @@ public class AddReminderDialog {
                         timePicker.getHour(),
                         timePicker.getMinute());
             }
+
 
             String repeat = repeatSpinner.getSelectedItem().toString();
             if ("None".equals(repeat)) {
