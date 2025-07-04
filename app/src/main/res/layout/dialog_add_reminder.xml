@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -37,6 +38,7 @@
         android:lineSpacingExtra="0dp"
         android:backgroundTint="@android:color/transparent"
         android:inputType="text" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -62,12 +64,13 @@
         android:backgroundTint="@android:color/transparent"
         android:inputType="textMultiLine"
         android:layout_marginTop="15dp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="1dp"
         android:background="@drawable/dotted_underline" />
-    <!-- Date & Time Section -->
+
     <!-- Date Accordion Section -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,9 +91,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@android:drawable/ic_menu_my_calendar"
-                android:tint="?attr/cardIconTint"
                 android:background="@android:color/transparent"
-                android:contentDescription="Pick Date" />
+                android:contentDescription="Pick Date"
+                app:tint="?attr/cardIconTint" />
 
             <TextView
                 android:id="@+id/dateText"
@@ -103,24 +106,17 @@
                 android:fontFamily="@font/nf" />
         </LinearLayout>
 
-        <!-- Collapsible DatePicker -->
+        <!-- Collapsible Custom Spinner DatePicker -->
         <FrameLayout
             android:id="@+id/datePickerContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone">
 
-            <DatePicker
-                android:id="@+id/datePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:calendarViewShown="false"
-                android:spinnersShown="true"
-                android:theme="@style/SpinnerDatePicker" />
+            <include layout="@layout/custom_spinner_date_picker" />
         </FrameLayout>
     </LinearLayout>
 
-    <!-- Time Accordion Section -->
     <!-- Time Accordion Section -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -141,9 +137,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@android:drawable/ic_menu_recent_history"
-                android:tint="?attr/cardIconTint"
                 android:background="@android:color/transparent"
-                android:contentDescription="Pick Time" />
+                android:contentDescription="Pick Time"
+                app:tint="?attr/cardIconTint" />
 
             <TextView
                 android:id="@+id/timeText"
@@ -174,8 +170,6 @@
         </FrameLayout>
     </LinearLayout>
 
-
-
     <!-- Date Shortcuts -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -201,7 +195,6 @@
             android:clickable="true"
             android:focusable="true" />
 
-
         <TextView
             android:id="@+id/clearDateBtn"
             android:layout_width="wrap_content"
@@ -213,6 +206,7 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="6dp"
             android:fontFamily="@font/nf" />
+
         <!-- Repeat every + Spinner -->
         <LinearLayout
             android:layout_width="wrap_content"
@@ -243,9 +237,7 @@
                 android:popupBackground="@drawable/spinner_dropdown_bg"
                 android:fontFamily="@font/nf"
                 android:textAlignment="center" />
-
         </LinearLayout>
-
     </LinearLayout>
 
     <!-- Bottom Buttons -->
@@ -277,5 +269,4 @@
             android:fontFamily="@font/nf"
             android:padding="8dp" />
     </LinearLayout>
-
 </LinearLayout>

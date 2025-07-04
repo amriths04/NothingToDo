@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.nothingtasks.R;
 
+import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 public class AddReminderDialog {
@@ -31,10 +32,8 @@ public class AddReminderDialog {
         TextView todayShortcut = dialogView.findViewById(R.id.todayShortcut);
         TextView clearDateBtn = dialogView.findViewById(R.id.clearDateBtn);
 
-        // Updated: use containers
         FrameLayout datePickerContainer = dialogView.findViewById(R.id.datePickerContainer);
         FrameLayout timePickerContainer = dialogView.findViewById(R.id.timePickerContainer);
-        DatePicker datePicker = dialogView.findViewById(R.id.datePicker);
         TimePicker timePicker = dialogView.findViewById(R.id.timePicker);
 
         ImageButton pickDateBtn = dialogView.findViewById(R.id.pickDateBtn);
@@ -43,7 +42,95 @@ public class AddReminderDialog {
         final Calendar selectedCalendar = Calendar.getInstance();
         final boolean[] hasDate = {false};
 
-        // Spinner setup
+        // Spinner DatePicker inside datePickerContainer
+        View spinnerDatePicker = dialogView.findViewById(R.id.spinnerDatePicker);
+        NumberPicker monthPicker = spinnerDatePicker.findViewById(R.id.monthPicker);
+        NumberPicker dayPicker = spinnerDatePicker.findViewById(R.id.dayPicker);
+        NumberPicker yearPicker = spinnerDatePicker.findViewById(R.id.yearPicker);
+
+        Calendar now = Calendar.getInstance();
+        int currentYear = now.get(Calendar.YEAR);
+        int currentMonth = now.get(Calendar.MONTH);
+        int currentDay = now.get(Calendar.DAY_OF_MONTH);
+        Calendar today = Calendar.getInstance();
+        int minYear = today.get(Calendar.YEAR);
+        int minMonth = today.get(Calendar.MONTH);
+        int minDay = today.get(Calendar.DAY_OF_MONTH);
+
+
+        monthPicker.setMinValue(0);
+        monthPicker.setMaxValue(11);
+        monthPicker.setDisplayedValues(new DateFormatSymbols().getMonths());
+        monthPicker.setValue(currentMonth);
+
+        yearPicker.setMinValue(currentYear);
+        yearPicker.setMaxValue(currentYear + 5);
+        yearPicker.setValue(currentYear);
+
+        Runnable updateDays = () -> {
+            int selectedYear = yearPicker.getValue();
+            int selectedMonth = monthPicker.getValue();
+
+            Calendar temp = Calendar.getInstance();
+            temp.set(selectedYear, selectedMonth, 1);
+            int maxDay = temp.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+            int minDayToSet = 1;
+
+            boolean isSameYear = selectedYear == minYear;
+            boolean isSameMonth = selectedMonth == minMonth;
+
+            if (selectedYear < minYear || (isSameYear && selectedMonth < minMonth)) {
+                // If whole month is before today, set entire picker range to today
+                yearPicker.setValue(minYear);
+                monthPicker.setValue(minMonth);
+                dayPicker.setMinValue(minDay);
+                dayPicker.setMaxValue(maxDay);
+                dayPicker.setValue(minDay);
+                return;
+            }
+
+            if (isSameYear && isSameMonth) {
+                minDayToSet = minDay;
+            }
+
+            dayPicker.setMinValue(minDayToSet);
+            dayPicker.setMaxValue(maxDay);
+
+            // Auto-correct day if it's invalid
+            if (dayPicker.getValue() < minDayToSet) {
+                dayPicker.setValue(minDayToSet);
+            } else if (dayPicker.getValue() > maxDay) {
+                dayPicker.setValue(maxDay);
+            }
+        };
+
+
+
+        monthPicker.setOnValueChangedListener((p, o, n) -> updateDays.run());
+        yearPicker.setOnValueChangedListener((p, o, n) -> updateDays.run());
+        updateDays.run();
+
+        Runnable updateDateText = () -> {
+            String month = new DateFormatSymbols().getMonths()[monthPicker.getValue()];
+            dateText.setText(String.format("%s %02d, %04d", month, dayPicker.getValue(), yearPicker.getValue()));
+            hasDate[0] = true;
+        };
+
+        monthPicker.setOnValueChangedListener((p, o, n) -> {
+            updateDays.run();
+            updateDateText.run();
+        });
+        yearPicker.setOnValueChangedListener((p, o, n) -> {
+            updateDays.run();
+            updateDateText.run();
+        });
+        dayPicker.setOnValueChangedListener((p, o, n) -> updateDateText.run());
+
+        updateDays.run();
+        updateDateText.run();
+
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 context,
                 R.array.repeat_options,
@@ -52,17 +139,16 @@ public class AddReminderDialog {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_nf);
         repeatSpinner.setAdapter(adapter);
 
-        // Accordion toggle
         View.OnClickListener toggleDatePicker = v -> {
             if (datePickerContainer.getVisibility() == View.VISIBLE) {
                 collapse(datePickerContainer);
             } else {
                 if (timePickerContainer.getVisibility() == View.VISIBLE) collapse(timePickerContainer);
                 expand(datePickerContainer);
-                int day = datePicker.getDayOfMonth();
-                int month = datePicker.getMonth() + 1;
-                int year = datePicker.getYear();
-                dateText.setText(String.format("%04d-%02d-%02d", year, month, day));
+                // set text from current pickers
+                String month = new DateFormatSymbols().getMonths()[monthPicker.getValue()];
+                dateText.setText(String.format("%s %02d, %04d", month, dayPicker.getValue(), yearPicker.getValue()));
+                hasDate[0] = true;
             }
         };
 
@@ -85,11 +171,6 @@ public class AddReminderDialog {
         pickTimeBtn.setOnClickListener(toggleTimePicker);
         timeText.setOnClickListener(toggleTimePicker);
 
-        // Live updates
-        datePicker.setOnDateChangedListener((view, year, monthOfYear, dayOfMonth) -> {
-            dateText.setText(String.format("%04d-%02d-%02d", year, monthOfYear + 1, dayOfMonth));
-        });
-
         timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
             String ampm = hourOfDay >= 12 ? "PM" : "AM";
             int hour12 = (hourOfDay % 12 == 0) ? 12 : hourOfDay % 12;
@@ -97,19 +178,20 @@ public class AddReminderDialog {
         });
 
         todayShortcut.setOnClickListener(v -> {
-            Calendar now = Calendar.getInstance();
-            selectedCalendar.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
-            dateText.setText("Today");
+            Calendar now1 = Calendar.getInstance();
+            yearPicker.setValue(now1.get(Calendar.YEAR));
+            monthPicker.setValue(now1.get(Calendar.MONTH));
+            dayPicker.setValue(now1.get(Calendar.DAY_OF_MONTH));
             hasDate[0] = true;
+            dateText.setText("Today");
             todayShortcut.setSelected(true);
             clearDateBtn.setSelected(false);
         });
 
         clearDateBtn.setOnClickListener(v -> {
-            titleEdit.setText("");
-            descEdit.setText("");
             dateText.setText("No date");
             hasDate[0] = false;
+            timeText.setText("No time");
             todayShortcut.setSelected(false);
         });
 
@@ -131,7 +213,9 @@ public class AddReminderDialog {
 
             String dateTime = null;
             if (hasDate[0]) {
-                selectedCalendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+                selectedCalendar.set(Calendar.YEAR, yearPicker.getValue());
+                selectedCalendar.set(Calendar.MONTH, monthPicker.getValue());
+                selectedCalendar.set(Calendar.DAY_OF_MONTH, dayPicker.getValue());
                 selectedCalendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
                 selectedCalendar.set(Calendar.MINUTE, timePicker.getMinute());
 
@@ -139,10 +223,9 @@ public class AddReminderDialog {
                         selectedCalendar.get(Calendar.YEAR),
                         selectedCalendar.get(Calendar.MONTH) + 1,
                         selectedCalendar.get(Calendar.DAY_OF_MONTH),
-                        timePicker.getHour(),
-                        timePicker.getMinute());
+                        selectedCalendar.get(Calendar.HOUR_OF_DAY),
+                        selectedCalendar.get(Calendar.MINUTE));
             }
-
 
             String repeat = repeatSpinner.getSelectedItem().toString();
             if ("None".equals(repeat)) {
