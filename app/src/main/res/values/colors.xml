@@ -4,5 +4,12 @@
     <color name="secbackground">#FFFFFF</color> <!-- light grey background -->
     <color name="textPrimary">#000000</color>      <!-- black primary text -->
     <color name="textSecondary">#1D1C1F</color>    <!-- light grey secondary text -->
-    <color name="flagRed">#D61B21</color>           <!-- red for flags/errors -->
+    <color name="flagRed">#D61B21</color>
+    <color name="pillOverdue">#FF5A5F</color>    <!-- Strong red -->
+    <color name="pillToday">#1976D2</color>      <!-- Vibrant blue -->
+    <color name="pillTomorrow">#0288D1</color>   <!-- Sky blue -->
+    <color name="pillDone">#388E3C</color>       <!-- Green -->
+    <color name="pillRepeat">#8E24AA</color>     <!-- Purple -->
+    <color name="pillNoDate">#9E9E9E</color><!-- red for flags/errors -->
+    <color name="white_always">#FFFFFF</color><!-- red for flags/errors -->
 </resources>

@@ -6,4 +6,11 @@
     <attr name="cardTextSecondary" format="color" />
     <attr name="cardIconTint" format="color" />
     <attr name="secbg" format="color" />
+    <attr name="pillOverdueColor" format="color" />
+    <attr name="pillTodayColor" format="color" />
+    <attr name="pillTomorrowColor" format="color" />
+    <attr name="pillDoneColor" format="color" />
+    <attr name="pillRepeatColor" format="color" />
+    <attr name="pillNoDateColor" format="color" />
+    <attr name="pillTextColor" format="color" />
 </resources>

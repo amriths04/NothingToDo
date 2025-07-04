@@ -7,6 +7,12 @@
         <item name="cardTextSecondary">@color/textSecondary</item>     <!-- grey text -->
         <item name="cardIconTint">@color/flagRed</item>            <!-- use black for icon circle background -->
         <item name="secbg">@color/secbackground</item>
+        <item name="pillOverdueColor">@color/pillOverdue</item>
+        <item name="pillTodayColor">@color/pillToday</item>
+        <item name="pillTomorrowColor">@color/pillTomorrow</item>
+        <item name="pillDoneColor">@color/pillDone</item>
+        <item name="pillRepeatColor">@color/pillRepeat</item>
+        <item name="pillNoDateColor">@color/pillNoDate</item>
+        <item name="pillTextColor">@color/white_always</item>
     </style>
 </resources>
-

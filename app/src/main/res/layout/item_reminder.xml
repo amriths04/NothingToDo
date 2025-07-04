@@ -12,7 +12,7 @@
     android:background="?attr/secbg"
     android:animateLayoutChanges="true">
 
-    <!-- Top row: Checkbox, Title, Flag -->
+    <!-- Top row: Checkbox, Title + Pills, Flag -->
     <LinearLayout
         android:id="@+id/topRow"
         android:layout_width="match_parent"
@@ -30,19 +30,49 @@
             android:focusable="false"
             android:focusableInTouchMode="false"/>
 
-        <!-- 📝 Title -->
-        <TextView
-            android:id="@+id/reminderTitle"
+        <!-- Title + Pills container -->
+        <LinearLayout
+            android:id="@+id/titlePillContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Reminder Title"
-            android:textSize="17sp"
-            app:fontFamily="@font/nf"
-            app:fontWeight="600"
-            android:textColor="?attr/cardTextPrimary"
-            android:maxLines="1"
-            android:ellipsize="end"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- 📝 Title -->
+            <TextView
+                android:id="@+id/reminderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Reminder Title"
+                android:textSize="17sp"
+                app:fontFamily="@font/nf"
+                app:fontWeight="600"
+                android:textColor="?attr/cardTextPrimary"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/pill1"
+                style="@style/PillStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PILL1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/pill2"
+                style="@style/PillStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PILL2"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
         <!-- 🚩 Flag checkbox -->
         <ImageView
