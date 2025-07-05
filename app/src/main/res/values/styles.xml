@@ -27,6 +27,10 @@
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+    <style name="BigCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/cb_selector</item>
+    </style>
+
 
 
 

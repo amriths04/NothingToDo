@@ -14,7 +14,6 @@ import com.example.nothingtasks.R;
 import com.example.nothingtasks.data.db.ReminderDao;
 import com.example.nothingtasks.data.model.Reminder;
 import com.example.nothingtasks.ui.helpers.ReminderPillHelper;
-import com.google.android.material.checkbox.MaterialCheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +59,6 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
         holder.title.setText(reminder.title);
         holder.description.setText(reminder.description);
-        holder.checkBox.setChecked(reminder.isDone);
 
         boolean isExpanded = expandedPositions.contains(position);
         holder.expandedSection.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
@@ -78,12 +76,24 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             holder.title.setPaintFlags(holder.title.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
+        // Set the correct image from selector
+        holder.checkBox.setSelected(reminder.isDone);
+
+// Toggle done status on click
         holder.checkBox.setOnClickListener(v -> {
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-            reminder.isDone = holder.checkBox.isChecked();
+
+            boolean isNowChecked = !v.isSelected();
+            v.setSelected(isNowChecked);
+
+            reminder.isDone = isNowChecked;
+
             new Thread(() -> reminderDao.update(reminder)).start();
             notifyItemChanged(position);
         });
+
+
+
 
         holder.flagIcon.setImageResource(reminder.isFlagged ? R.drawable.bb : R.drawable.aa);
         holder.flagIcon.setOnClickListener(v -> {
@@ -123,7 +133,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
     static class ReminderViewHolder extends RecyclerView.ViewHolder {
         TextView title, description, date, pill1, pill2;
-        MaterialCheckBox checkBox;
+        ImageView checkBox;
         ImageView flagIcon;
         LinearLayout expandedSection;
 
