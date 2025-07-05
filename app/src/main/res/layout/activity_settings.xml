@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/settingsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,8 +26,8 @@
             android:background="@android:color/transparent"
             android:src="@drawable/back"
             android:contentDescription="Back"
-            android:tint="?attr/cardTextPrimary"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            app:tint="?attr/cardTextPrimary" />
 
         <!-- Title -->
         <TextView
@@ -65,7 +66,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_info_details"
-                android:tint="?attr/cardTextSecondary" />
+                app:tint="?attr/cardTextSecondary" />
         </LinearLayout>
 
         <!-- Dark Mode Toggle -->
@@ -97,7 +98,7 @@
         </LinearLayout>
 
         <!-- About Option -->
-        <LinearLayout
+        <LinearLayout android:id="@+id/aboutButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -122,7 +123,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_help"
-                android:tint="?attr/cardTextSecondary" />
+                app:tint="?attr/cardTextSecondary" />
         </LinearLayout>
 
         <!-- Version Info -->

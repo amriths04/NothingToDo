@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_dialog_bg"
+    android:padding="12dp"
+    android:gravity="center_horizontal">
+
+    <!-- App Title -->
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nothing To Do"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="?attr/cardTextPrimary"
+        android:fontFamily="@font/nf" />
+
+    <!-- Version -->
+    <TextView
+        android:id="@+id/appVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Version 1.0.0"
+        android:textSize="14sp"
+        android:textColor="?attr/cardTextSecondary"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/nf" />
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A minimal reminders app inspired by Nothing OS ."
+        android:textSize="15sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:textColor="?attr/cardTextPrimary"
+        android:fontFamily="@font/nf"
+        android:gravity="center" />
+
+    <!-- GitHub Profile -->
+    <TextView
+        android:id="@+id/profileLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔗 GitHub: @amriths04"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/flagRed"
+        android:fontFamily="@font/nf" />
+
+    <!-- Repo Link -->
+    <TextView
+        android:id="@+id/repoLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🔗 Repo: NothingToDo "
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/flagRed"
+        android:fontFamily="@font/nf" />
+
+    <!-- Close Button -->
+    <TextView
+        android:id="@+id/closeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:textSize="35sp"
+        android:textColor="?attr/cardTextPrimary"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/nf" />
+</LinearLayout>
