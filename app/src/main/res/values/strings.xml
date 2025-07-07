@@ -1,6 +1,7 @@
 <resources>
         <string name="app_name">Nothing to Do</string>
-<string-array name="repeat_options">
+    <string name="WhatsNew">• Reminder pills added: Done, Today, Tomorrow and 5 other \n• New custom date picker </string>
+    <string-array name="repeat_options">
         <item>None</item>
         <item>Day</item>
         <item>Week</item>
