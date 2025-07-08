@@ -44,8 +44,6 @@ public class ReminderPillHelper {
         }
         return null;
     }
-
-
     private static int getDatePillColorAttr(String pill) {
         switch (pill) {
             case "TODAY": return R.attr.pillTodayColor;
@@ -195,13 +193,10 @@ public class ReminderPillHelper {
 
     private static void setPill(Context context, TextView pill, String text, int colorAttr) {
         pill.setText(text);
-
-        // Set background color from attribute (e.g., pillDoneColor)
         TypedValue bgColor = new TypedValue();
         context.getTheme().resolveAttribute(colorAttr, bgColor, true);
         pill.setBackgroundColor(bgColor.data);
 
-        // Set text color from theme attribute (e.g., pillTextColor → white_always)
         TypedValue textColor = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.pillTextColor, textColor, true);
         pill.setTextColor(textColor.data);

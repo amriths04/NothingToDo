@@ -44,9 +44,6 @@ public interface ReminderDao {
     LiveData<List<Reminder>> getScheduledReminders(String nowDateTime);
 
 
-
-    // --- NEW COUNT QUERIES ---
-
     @Query("SELECT COUNT(*) FROM reminders")
     int getCountAll();
 

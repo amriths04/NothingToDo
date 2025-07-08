@@ -19,16 +19,16 @@
         <!-- Back Button -->
         <ImageButton
             android:id="@+id/backButton"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="4dp"
             android:layout_gravity="start"
             android:background="@android:color/transparent"
             android:src="@drawable/back"
             android:contentDescription="Back"
-            android:tint="?attr/cardTextPrimary"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            app:tint="?attr/cardTextPrimary" />
 
         <!-- List Name -->
         <TextView
@@ -83,7 +83,7 @@
             android:layout_height="96dp"
             android:src="@drawable/add"
             android:contentDescription="Empty"
-            android:tint="@color/flagRed" />
+            app:tint="@color/flagRed" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -125,8 +125,8 @@
         <!-- Filter Button -->
         <ImageButton
             android:id="@+id/filterButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"

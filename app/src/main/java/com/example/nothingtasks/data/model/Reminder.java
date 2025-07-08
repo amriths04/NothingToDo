@@ -17,13 +17,13 @@ public class Reminder {
     public boolean isFlagged;
 
     @Nullable
-    public String date;     // e.g., "2025-06-30" or null
+    public String date;
 
     @Nullable
-    public Integer listId;  // Nullable foreign key to TaskList
+    public Integer listId;
 
     @Nullable
-    public String repeat;   // NEW: e.g., "None", "Daily", "Weekly", "Monthly"
+    public String repeat;
 
     public Reminder(String title, String description, boolean isDone, boolean isFlagged, @Nullable String date, @Nullable Integer listId, @Nullable String repeat) {
         this.title = title;
