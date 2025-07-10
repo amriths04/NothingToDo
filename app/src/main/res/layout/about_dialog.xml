@@ -12,7 +12,7 @@
         android:id="@+id/appTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nothing To Do"
+        android:text="@string/app_name"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="?attr/cardTextPrimary"
@@ -23,7 +23,6 @@
         android:id="@+id/appVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version 1.0.0"
         android:textSize="14sp"
         android:textColor="?attr/cardTextSecondary"
         android:layout_marginTop="4dp"
@@ -34,13 +33,13 @@
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A minimal reminders app inspired by Nothing OS ."
+        android:text="A minimal reminders app inspired by Nothing OS."
         android:textSize="15sp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="7dp"
         android:textColor="?attr/cardTextPrimary"
         android:fontFamily="@font/nf"
-        android:gravity="center" />
+        android:gravity="center"/>
 
     <!-- GitHub Profile -->
     <TextView
@@ -49,8 +48,8 @@
         android:layout_height="wrap_content"
         android:text="🔗 GitHub: @amriths04"
         android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/flagRed"
+        android:layout_marginTop="10dp"
+        android:textColor="?attr/cardIconTint"
         android:fontFamily="@font/nf" />
 
     <!-- Repo Link -->
@@ -61,7 +60,7 @@
         android:text="🔗 Repo: NothingToDo "
         android:textSize="18sp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/flagRed"
+        android:textColor="?attr/cardIconTint"
         android:fontFamily="@font/nf" />
 
     <!-- Close Button -->
@@ -72,6 +71,6 @@
         android:text="X"
         android:textSize="35sp"
         android:textColor="?attr/cardTextPrimary"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/nf" />
 </LinearLayout>

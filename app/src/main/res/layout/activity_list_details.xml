@@ -4,7 +4,7 @@
     android:id="@+id/listDetailRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="?attr/cardBackgroundColor">
 
     <!-- Top Toolbar -->
     <RelativeLayout
@@ -13,17 +13,17 @@
         android:layout_height="56dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:gravity="center_vertical"
-        android:background="@color/background">
+        android:background="?attr/cardBackgroundColor">
 
-        <!-- Back Button -->
+    <!-- Back Button -->
         <ImageButton
             android:id="@+id/backButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="4dp"
-            android:layout_gravity="start"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:src="@drawable/back"
             android:contentDescription="Back"
@@ -42,16 +42,16 @@
             android:textColor="?attr/cardTextPrimary"
             android:layout_centerInParent="true" />
 
-        <!-- Delete Button -->
         <ImageButton
             android:id="@+id/deleteListButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_delete"
-            android:textColor="?attr/cardTextPrimary"
+            android:src="@drawable/ic_delete_outline"
             android:contentDescription="Delete List" />
+
     </RelativeLayout>
 
     <!-- Reminder RecyclerView -->
@@ -130,8 +130,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_sort_by_size"
-            android:textColor="?attr/cardTextPrimary"
+            android:src="@drawable/ic_filter_list"
             android:contentDescription="Filter"
             android:padding="6dp" />
     </RelativeLayout>

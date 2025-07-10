@@ -1,7 +1,5 @@
-<!-- res/values/themes.xml -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.NothingTasks" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Reference colors from colors.xml -->
         <item name="cardBackgroundColor">@color/background</item>      <!-- white/light background -->
         <item name="cardTextPrimary">@color/textPrimary</item>         <!-- black text -->
         <item name="cardTextSecondary">@color/textSecondary</item>     <!-- grey text -->
