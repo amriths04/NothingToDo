@@ -1,9 +1,9 @@
-<!-- res/values-night/themes.xml -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
     <style name="Theme.NothingTasks" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="cardBackgroundColor">@color/background</item>      <!-- dark background -->
-        <item name="cardTextPrimary">@color/textPrimary</item>         <!-- white text -->
-        <item name="cardTextSecondary">@color/textSecondary</item>     <!-- lighter grey -->
+        <item name="cardBackgroundColor">@color/background</item>
+        <item name="cardTextPrimary">@color/textPrimary</item>
+        <item name="cardTextSecondary">@color/textSecondary</item>
         <item name="cardIconTint">@color/flagRed</item>
         <item name="secbg">@color/secbackground</item>
         <item name="pillOverdueColor">@color/pillOverdue</item>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#010001</color>       <!-- dark background -->
-    <color name="secbackground">#1D1C1F</color>       <!-- dark background -->
-    <color name="textPrimary">#FFFFFF</color>      <!-- white primary text -->
-    <color name="textSecondary">#B3B3B3</color>    <!-- lighter grey secondary -->
+    <color name="background">#010001</color>
+    <color name="secbackground">#1D1C1F</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#B3B3B3</color>
     <color name="flagRed">#D61B21</color>
-    <color name="pillOverdue">#FF6D6D</color>     <!-- Slightly lighter red -->
-    <color name="pillToday">#42A5F5</color>       <!-- Lighter blue -->
-    <color name="pillTomorrow">#4FC3F7</color>    <!-- Light sky blue -->
-    <color name="pillDone">#66BB6A</color>        <!-- Light green -->
-    <color name="pillRepeat">#BA68C8</color>      <!-- Lighter purple -->
-    <color name="pillNoDate">#BDBDBD</color><!-- red for dark mode -->
+    <color name="pillOverdue">#FF6D6D</color>
+    <color name="pillToday">#42A5F5</color>
+    <color name="pillTomorrow">#4FC3F7</color>
+    <color name="pillDone">#66BB6A</color>
+    <color name="pillRepeat">#BA68C8</color>
+    <color name="pillNoDate">#BDBDBD</color>
     <color name="white_always">#FFFFFF</color>
 </resources>

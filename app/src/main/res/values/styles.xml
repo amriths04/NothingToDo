@@ -10,9 +10,6 @@
         <item name="android:textColorPrimary">?attr/cardTextPrimary</item>
         <item name="android:background">?attr/background</item>
     </style>
-    <style name="SpinnerDatePicker" parent="android:Widget.Material.DatePicker">
-        <item name="android:datePickerMode">spinner</item>
-    </style>
     <style name="PillStyle">
         <item name="android:background">@drawable/pill_background</item>
         <item name="android:textSize">12sp</item>
@@ -30,8 +27,4 @@
     <style name="BigCheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="android:button">@drawable/cb_selector</item>
     </style>
-
-
-
-
 </resources>
