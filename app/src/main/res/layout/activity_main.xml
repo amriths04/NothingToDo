@@ -4,15 +4,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="?attr/cardBackgroundColor">
 
-    <!-- Scrollable Content -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar"
-        android:fillViewport="true">
-
+    <!-- Top Container (Fixed) -->
         <LinearLayout
             android:id="@+id/topContainer"
             android:layout_width="match_parent"
@@ -20,9 +14,17 @@
             android:orientation="vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="0dp">
 
             <!-- Search Bar -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/search_box_border"
+            android:padding="2dp">
+
             <EditText
                 android:id="@+id/searchBar"
                 android:layout_width="match_parent"
@@ -38,13 +40,12 @@
                 android:paddingBottom="10dp"
                 android:gravity="center_vertical"
                 android:inputType="text"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:textColor="?attr/cardTextPrimary"
                 android:textColorHint="?attr/cardTextSecondary"
                 android:textSize="20sp"
                 android:fontFamily="@font/nf"
                 android:backgroundTint="@android:color/transparent" />
+        </FrameLayout>
 
             <!-- Row 1 -->
             <LinearLayout
@@ -97,8 +98,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp" />
             </LinearLayout>
-
-
             <!-- My Lists Title Row -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -118,7 +117,8 @@
                     android:textStyle="bold"
                     android:textColor="?attr/cardTextPrimary"
                     android:fontFamily="@font/nf"
-                    android:paddingStart="4dp" />
+                    android:paddingStart="4dp"
+                    android:paddingEnd="4dp"/>
 
                 <ImageButton
                     android:id="@+id/addListButton"
@@ -128,37 +128,36 @@
                     android:src="@android:drawable/ic_input_add"
                     app:tint="?attr/cardIconTint"
                     android:contentDescription="Add New List" />
-
             </LinearLayout>
+    </LinearLayout>
 
-            <!-- Scrollable Custom List Section -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/myListsRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"
-                android:clipToPadding="false"
-                android:overScrollMode="never"/>
+        <!-- Scrollable Custom List Section -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myListsRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_above="@+id/bottomBar"
+            android:layout_below="@id/topContainer"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:clipToPadding="false"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbars="vertical" />
 
-        </LinearLayout>
-    </ScrollView>
 
     <!-- Fixed Bottom Bar -->
     <RelativeLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="55dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/background"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
+        android:background="?attr/cardBackgroundColor"
+        android:paddingStart="22dp"
+        android:paddingEnd="10dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:elevation="8dp">
 
-        <!-- "+ New Reminder" Text -->
         <TextView
             android:id="@+id/newReminderText"
             android:layout_width="wrap_content"
@@ -170,19 +169,19 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true" />
 
-        <!-- Settings Icon -->
         <ImageButton
             android:id="@+id/settingsButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_preferences"
-            app:tint="?attr/cardTextPrimary"
             android:contentDescription="Settings"
-            android:padding="6dp" />
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_marginEnd="0dp"
+            android:padding="1dp"
+            android:src="@drawable/ic_sett"
+            app:tint="?attr/cardIconTint" />
     </RelativeLayout>
 </RelativeLayout>

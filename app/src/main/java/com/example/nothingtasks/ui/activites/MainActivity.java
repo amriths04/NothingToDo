@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -90,9 +92,8 @@ public class MainActivity extends AppCompatActivity {
         allIcon.setImageResource(R.drawable.all);
         allTitle.setText("All");
 
-        flaggedIcon.setImageResource(R.drawable.flagged);
+        flaggedIcon.setImageResource(R.drawable.bb);
         flaggedTitle.setText("Flagged");
-        flaggedIcon.setColorFilter(Color.RED);
 
         todayGrid.setOnClickListener(v -> openGridActivity(GridActivity.FILTER_TODAY));
         scheduledGrid.setOnClickListener(v -> openGridActivity(GridActivity.FILTER_SCHEDULED));
@@ -218,6 +219,26 @@ public class MainActivity extends AppCompatActivity {
         TextView cancelBtn = view.findViewById(R.id.cancelBtn);
         TextView addBtn = view.findViewById(R.id.addBtn);
 
+        InputFilter lengthFilter = new InputFilter() {
+            private final int MAX_LENGTH = 30;
+
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                int newLength = dest.length() + (end - start) - (dend - dstart);
+
+                if (newLength > MAX_LENGTH) {
+                    inputName.setError("Maximum 30 characters allowed");
+                    return ""; // block input
+                } else {
+                    inputName.setError(null); // clear error if under limit
+                    return null; // accept input
+                }
+            }
+        };
+
+        inputName.setFilters(new InputFilter[] { lengthFilter });
+
         AlertDialog dialog = builder.setView(view).create();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.show();
@@ -246,8 +267,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    // ✅ Clean up handler to avoid memory leaks
     @Override
     protected void onDestroy() {
         super.onDestroy();

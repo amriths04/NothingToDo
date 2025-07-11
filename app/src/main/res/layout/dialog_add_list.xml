@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="20dp"
-    android:paddingTop="24dp"
+    android:paddingTop="20dp"
     android:paddingBottom="16dp"
     android:background="@drawable/rounded_dialog_bg"
     android:fontFamily="@font/nf">
@@ -26,9 +26,11 @@
     <EditText
         android:id="@+id/listNameInput"
         android:layout_width="match_parent"
+        android:maxWidth="488dp"
         android:layout_height="wrap_content"
         android:hint="List name"
-        android:textSize="18sp"
+        android:importantForAutofill="no"
+        android:textSize="20sp"
         android:fontFamily="@font/nf"
         android:textColor="?attr/cardTextPrimary"
         android:textColorHint="?attr/cardTextSecondary"
@@ -47,6 +49,7 @@
     <EditText
         android:id="@+id/listDescInput"
         android:layout_width="match_parent"
+        android:maxWidth="488dp"
         android:layout_height="wrap_content"
         android:hint="Description (optional)"
         android:minLines="1"
@@ -54,6 +57,7 @@
         android:gravity="top"
         android:textSize="18sp"
         android:padding="2dp"
+        android:importantForAutofill="no"
         android:includeFontPadding="false"
         android:lineSpacingExtra="0dp"
         android:fontFamily="@font/nf"
@@ -82,10 +86,10 @@
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:textColor="?attr/cardIconTint"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:fontFamily="@font/nf"
             android:layout_marginEnd="16dp"
-            android:padding="8dp" />
+            android:padding="4dp" />
 
         <TextView
             android:id="@+id/addBtn"
@@ -93,9 +97,8 @@
             android:layout_height="wrap_content"
             android:text="Add"
             android:textColor="?attr/cardTextPrimary"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:fontFamily="@font/nf"
-            android:padding="8dp" />
+            android:padding="4dp" />
     </LinearLayout>
-
 </LinearLayout>
