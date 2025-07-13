@@ -42,6 +42,22 @@ public class AddReminderDialog {
         final Calendar selectedCalendar = Calendar.getInstance();
         final boolean[] hasDate = {false};
 
+        repeatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected = parent.getItemAtPosition(position).toString();
+
+                if (!selected.equalsIgnoreCase("None")) {
+                    repeatSpinner.setSelected(true);
+                } else {
+                    repeatSpinner.setSelected(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+
         // Spinner DatePicker inside datePickerContainer
         View spinnerDatePicker = dialogView.findViewById(R.id.spinnerDatePicker);
         NumberPicker monthPicker = spinnerDatePicker.findViewById(R.id.monthPicker);
@@ -189,6 +205,8 @@ public class AddReminderDialog {
             hasDate[0] = false;
             timeText.setText("No time");
             todayShortcut.setSelected(false);
+            repeatSpinner.setSelection(0);
+            repeatSpinner.setSelected(false);
         });
 
         AlertDialog dialog = new AlertDialog.Builder(context)

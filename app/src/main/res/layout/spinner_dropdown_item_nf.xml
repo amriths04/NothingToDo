@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fontFamily="@font/nf"
-    android:textSize="14sp"
-    android:textColor="?attr/cardTextPrimary"
+    android:textSize="18sp"
+    android:textColor="?attr/cardBackgroundColor"
     android:paddingVertical="8dp"
-    android:paddingHorizontal="16dp"
+    android:paddingHorizontal="14dp"
     android:background="@drawable/spinner_dropdown_bg" />

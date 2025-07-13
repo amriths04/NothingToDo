@@ -172,77 +172,74 @@
 
     <!-- Date Shortcuts -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start"
+        android:layout_width="371dp"
+        android:layout_height="38dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="4dp"
+        android:gravity="start"
+        android:orientation="horizontal"
         android:paddingHorizontal="2dp">
+
+        <TextView
+            android:id="@+id/repeatLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat :"
+            android:textColor="?attr/cardTextSecondary"
+            android:textSize="18sp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:fontFamily="@font/nf"
+            android:layout_marginStart="1dp"/>
+        <Spinner
+            android:id="@+id/repeatSpinner"
+            android:layout_width="89dp"
+            android:layout_height="37dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/pill_border"
+            android:entries="@array/repeat_options"
+            android:fontFamily="@font/nf"
+            android:paddingHorizontal="1dp"
+            android:paddingVertical="2dp"
+            android:popupBackground="@drawable/spinner_dropdown_bg"
+            android:spinnerMode="dropdown"
+            android:textAlignment="center"
+            android:textColor="?attr/secbg"/>
 
         <TextView
             android:id="@+id/todayShortcut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Today"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/pill_border"
-            android:textColor="?attr/cardTextSecondary"
-            android:textSize="14sp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:fontFamily="@font/nf"
-            android:layout_marginEnd="12dp"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            android:fontFamily="@font/nf"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            android:text="Today"
+            android:textColor="?attr/cardTextSecondary"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/clearDateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Clear"
             android:background="@drawable/pill_border"
+            android:fontFamily="@font/nf"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            android:text="Clear"
             android:textColor="?attr/cardTextSecondary"
-            android:textSize="14sp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="6dp"
-            android:fontFamily="@font/nf" />
+            android:textSize="15sp" />
 
-        <!-- Repeat every + Spinner -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="-4dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Repeat every"
-                android:textSize="14sp"
-                android:textColor="?attr/cardTextPrimary"
-                android:fontFamily="@font/nf"
-                android:layout_marginEnd="8dp" />
 
-            <Spinner
-                android:id="@+id/repeatSpinner"
-                style="@style/CustomSpinnerStyle"
-                android:layout_width="120dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="16dp"
-                android:spinnerMode="dropdown"
-                android:entries="@array/repeat_options"
-                android:backgroundTint="?attr/cardTextSecondary"
-                android:popupBackground="@drawable/spinner_dropdown_bg"
-                android:fontFamily="@font/nf"
-                android:textAlignment="center" />
-        </LinearLayout>
     </LinearLayout>
 
     <!-- Bottom Buttons -->
     <LinearLayout
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -254,7 +251,7 @@
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:textColor="?attr/cardIconTint"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:fontFamily="@font/nf"
             android:layout_marginEnd="16dp"
             android:padding="8dp" />
@@ -265,7 +262,7 @@
             android:layout_height="wrap_content"
             android:text="Add"
             android:textColor="?attr/cardTextPrimary"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:fontFamily="@font/nf"
             android:padding="8dp" />
     </LinearLayout>
