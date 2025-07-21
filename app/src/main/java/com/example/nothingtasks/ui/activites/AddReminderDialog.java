@@ -47,11 +47,7 @@ public class AddReminderDialog {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected = parent.getItemAtPosition(position).toString();
 
-                if (!selected.equalsIgnoreCase("None")) {
-                    repeatSpinner.setSelected(true);
-                } else {
-                    repeatSpinner.setSelected(false);
-                }
+                repeatSpinner.setSelected(!selected.equalsIgnoreCase("None"));
             }
 
             @Override
@@ -310,8 +306,8 @@ public class AddReminderDialog {
         dialog.show();
         Window window = dialog.getWindow();
         if (window != null) {
-            int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.97);
-            window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            window.setGravity(Gravity.CENTER);
         }
     }
 
