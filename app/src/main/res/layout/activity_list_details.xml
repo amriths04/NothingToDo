@@ -54,20 +54,68 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_delete_outline"
             android:contentDescription="Delete List" />
-
     </RelativeLayout>
 
-    <!-- Reminder RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/remindersRecycler"
+    <!-- Split screen container (active and completed) -->
+    <LinearLayout
+        android:id="@+id/splitContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topBar"
         android:layout_above="@id/bottomBar"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:padding="8dp"
-        android:nestedScrollingEnabled="true" />
+        android:orientation="vertical">
+
+        <!-- Active Reminders RecyclerView (70%) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/remindersRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbars="vertical"
+            android:padding="8dp"
+            android:clipToPadding="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/dotted_underline" />
+
+
+        <!-- Completed Section (30%) -->
+        <LinearLayout
+            android:id="@+id/completedSection"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/completedTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="?attr/cardTextPrimary"
+                android:fontFamily="@font/nf"
+                android:paddingBottom="4dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/completedRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:overScrollMode="ifContentScrolls"
+                android:scrollbars="vertical"
+                android:clipToPadding="false" />
+        </LinearLayout>
+    </LinearLayout>
 
     <!-- Empty State View -->
     <LinearLayout
@@ -111,7 +159,6 @@
         android:paddingBottom="12dp"
         android:elevation="8dp">
 
-        <!-- Add Reminder -->
         <TextView
             android:id="@+id/addReminderBtn"
             android:layout_width="wrap_content"
@@ -130,7 +177,6 @@
             android:foreground="?attr/selectableItemBackground"
             android:layout_centerVertical="true" />
 
-        <!-- Filter Button -->
         <ImageButton
             android:id="@+id/filterButton"
             android:layout_width="48dp"

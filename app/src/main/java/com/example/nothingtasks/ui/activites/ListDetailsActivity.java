@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,9 @@ import com.example.nothingtasks.data.db.TaskDatabase;
 import com.example.nothingtasks.data.model.Reminder;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListDetailsActivity extends AppCompatActivity {
 
     private int listId;
@@ -49,6 +53,7 @@ public class ListDetailsActivity extends AppCompatActivity {
             return insets;
         });
         View emptyStateView = findViewById(R.id.emptyStateView);
+        ViewGroup completedSection = findViewById(R.id.completedSection);
         // Get list ID and name from Intent
         listId = getIntent().getIntExtra("listId", -1);
         listName = getIntent().getStringExtra("listName");
@@ -92,12 +97,47 @@ public class ListDetailsActivity extends AppCompatActivity {
 
         // Observe reminders
         reminderDao.getRemindersByList(listId).observe(this, reminders -> {
-            reminderAdapter.setReminders(reminders);
-
             if (reminders == null || reminders.isEmpty()) {
                 emptyStateView.setVisibility(View.VISIBLE);
+                reminderAdapter.setReminders(null);
+                completedSection.removeAllViews();
+                return;
+            }
+
+            emptyStateView.setVisibility(View.GONE);
+            // Split into active & completed
+            List<Reminder> active = new ArrayList<>();
+            List<Reminder> completed = new ArrayList<>();
+
+            for (Reminder r : reminders) {
+                if (r.isDone) {
+                    completed.add(r);
+                } else {
+                    active.add(r);
+                }
+            }
+            // Update adapter
+            reminderAdapter.setReminders(active);
+
+            // Show completed section only if at least 1 completed reminder exists
+            RecyclerView completedRecycler = findViewById(R.id.completedRecycler);
+            TextView completedTitle = findViewById(R.id.completedTitle);
+
+            if (!completed.isEmpty()) {
+                completedTitle.setVisibility(View.VISIBLE);
+                completedRecycler.setVisibility(View.VISIBLE);
+
+                // Setup only once
+                if (completedRecycler.getAdapter() == null) {
+                    completedRecycler.setLayoutManager(new LinearLayoutManager(this));
+                    completedRecycler.setAdapter(new ReminderAdapter(reminderDao));
+                }
+
+                ((ReminderAdapter) completedRecycler.getAdapter()).setReminders(completed);
+
             } else {
-                emptyStateView.setVisibility(View.GONE);
+                completedTitle.setVisibility(View.GONE);
+                completedRecycler.setVisibility(View.GONE);
             }
         });
 

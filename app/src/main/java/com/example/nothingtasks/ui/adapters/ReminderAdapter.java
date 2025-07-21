@@ -35,9 +35,11 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
         this.reminderDao = dao;
     }
 
-    public void setReminders(List<Reminder> newReminders) {
-        reminders.clear();
-        reminders.addAll(newReminders);
+    public void setReminders(List<Reminder> reminders) {
+        this.reminders.clear();
+        if (reminders != null) {
+            this.reminders.addAll(reminders);
+        }
         notifyDataSetChanged();
     }
 

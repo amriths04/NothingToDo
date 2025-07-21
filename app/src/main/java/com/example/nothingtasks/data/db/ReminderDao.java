@@ -55,4 +55,6 @@ public interface ReminderDao {
 
     @Query("SELECT COUNT(*) FROM reminders WHERE isFlagged = 1")
     int getCountFlagged();
+    @Query("SELECT * FROM reminders WHERE listId = :listId AND isDone = 1 ORDER BY id DESC")
+    LiveData<List<Reminder>> getDoneRemindersByList(int listId);
 }
