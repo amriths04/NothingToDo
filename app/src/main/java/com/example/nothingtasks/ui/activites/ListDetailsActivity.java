@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -169,7 +170,7 @@ public class ListDetailsActivity extends AppCompatActivity {
 
                                     new Thread(() -> reminderDao.delete(reminderToDelete)).start();
 
-                                    // Show styled Snackbar for Undo
+                                    // SNACK BAR
                                     Snackbar snackbar = Snackbar.make(findViewById(R.id.listDetailRoot), "Reminder deleted", Snackbar.LENGTH_LONG)
                                             .setAction("UNDO", v -> {
                                                 // Re-insert if Undo tapped
@@ -183,8 +184,7 @@ public class ListDetailsActivity extends AppCompatActivity {
                                     TextView sbText = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
                                     sbText.setTextColor(Color.WHITE);
                                     sbText.setTextSize(14f);
-                                    sbText.setTypeface(getResources().getFont(R.font.nf)); // 🧠 Requires nf.ttf in font folder
-
+                                    sbText.setTypeface(ResourcesCompat.getFont(ListDetailsActivity.this, R.font.nf));
                                     TextView sbAction = sbView.findViewById(com.google.android.material.R.id.snackbar_action);
                                     sbAction.setTextColor(Color.parseColor("#2196F3")); // accent blue
 
