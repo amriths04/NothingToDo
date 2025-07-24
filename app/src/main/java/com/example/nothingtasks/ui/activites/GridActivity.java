@@ -46,7 +46,7 @@ public class GridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_list_details);
+        setContentView(R.layout.activity_grid_details);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.listDetailRoot), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

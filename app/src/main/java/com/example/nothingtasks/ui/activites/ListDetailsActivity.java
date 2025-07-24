@@ -98,15 +98,20 @@ public class ListDetailsActivity extends AppCompatActivity {
 
         // Observe reminders
         reminderDao.getRemindersByList(listId).observe(this, reminders -> {
+            View completedDivider = findViewById(R.id.completedDivider);
+            View completedTitle = findViewById(R.id.completedTitle);
+            RecyclerView completedRecycler = findViewById(R.id.completedRecycler);
+
             if (reminders == null || reminders.isEmpty()) {
                 emptyStateView.setVisibility(View.VISIBLE);
                 reminderAdapter.setReminders(null);
-                completedSection.removeAllViews();
+                completedSection.setVisibility(View.GONE);
+                completedDivider.setVisibility(View.GONE);
                 return;
             }
 
             emptyStateView.setVisibility(View.GONE);
-            // Split into active & completed
+
             List<Reminder> active = new ArrayList<>();
             List<Reminder> completed = new ArrayList<>();
 
@@ -117,18 +122,15 @@ public class ListDetailsActivity extends AppCompatActivity {
                     active.add(r);
                 }
             }
-            // Update adapter
+
             reminderAdapter.setReminders(active);
 
-            // Show completed section only if at least 1 completed reminder exists
-            RecyclerView completedRecycler = findViewById(R.id.completedRecycler);
-            TextView completedTitle = findViewById(R.id.completedTitle);
-
             if (!completed.isEmpty()) {
+                completedSection.setVisibility(View.VISIBLE);
+                completedDivider.setVisibility(View.VISIBLE);
                 completedTitle.setVisibility(View.VISIBLE);
                 completedRecycler.setVisibility(View.VISIBLE);
 
-                // Setup only once
                 if (completedRecycler.getAdapter() == null) {
                     completedRecycler.setLayoutManager(new LinearLayoutManager(this));
                     completedRecycler.setAdapter(new ReminderAdapter(reminderDao));
@@ -137,11 +139,10 @@ public class ListDetailsActivity extends AppCompatActivity {
                 ((ReminderAdapter) completedRecycler.getAdapter()).setReminders(completed);
 
             } else {
-                completedTitle.setVisibility(View.GONE);
-                completedRecycler.setVisibility(View.GONE);
+                completedSection.setVisibility(View.GONE);
+                completedDivider.setVisibility(View.GONE);
             }
         });
-
 
         // ✅ Add swipe-to-delete support
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(

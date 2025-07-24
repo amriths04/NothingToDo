@@ -75,47 +75,6 @@
             android:scrollbars="vertical"
             android:padding="8dp"
             android:clipToPadding="false" />
-
-        <View
-            android:id="@+id/completedDivider"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="2dp"
-            android:background="@drawable/dotted_underline" />
-
-
-        <!-- Completed Section (30%) -->
-        <LinearLayout
-            android:id="@+id/completedSection"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical"
-            android:paddingHorizontal="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
-
-            <TextView
-                android:id="@+id/completedTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Completed"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="?attr/cardTextPrimary"
-                android:fontFamily="@font/nf"
-                android:paddingBottom="4dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/completedRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:overScrollMode="ifContentScrolls"
-                android:scrollbars="vertical"
-                android:clipToPadding="false" />
-        </LinearLayout>
     </LinearLayout>
 
     <!-- Empty State View -->
