@@ -45,5 +45,8 @@ public class Reminder {
         this.listId = other.listId;
         this.repeat = other.repeat;
     }
+    public Integer getListId() {
+        return listId;
+    }
 
 }

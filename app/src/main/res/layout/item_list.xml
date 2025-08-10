@@ -59,5 +59,17 @@
                 android:textColor="?attr/cardTextSecondary"
                 android:layout_marginTop="1dp" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/listReminderCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/cardTextSecondary"
+            android:textSize="14sp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:fontFamily="@font/nf"
+            android:paddingEnd="8dp"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

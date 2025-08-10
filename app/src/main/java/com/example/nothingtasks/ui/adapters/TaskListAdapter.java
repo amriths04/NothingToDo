@@ -49,6 +49,13 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
         String firstLetter = (name != null && !name.isEmpty()) ? name.substring(0, 1).toUpperCase() : "?";
         holder.icon.setText(firstLetter);
 
+        // Set reminder count only if > 0
+        if (list.getReminderCount() > 0) {
+            holder.count.setVisibility(View.VISIBLE);
+            holder.count.setText(String.valueOf(list.getReminderCount()));
+        } else {
+            holder.count.setVisibility(View.GONE);
+        }
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
                 clickListener.onListClick(list);
@@ -62,13 +69,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     }
 
     static class TaskListViewHolder extends RecyclerView.ViewHolder {
-        TextView title, desc, icon;
+        TextView title, desc, icon, count;
 
         public TaskListViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.listName);
             desc = itemView.findViewById(R.id.listDesc);
             icon = itemView.findViewById(R.id.listIconLetter);
+            count = itemView.findViewById(R.id.listReminderCount);
         }
     }
 }

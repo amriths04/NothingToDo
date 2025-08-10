@@ -3,7 +3,6 @@ package com.example.nothingtasks.ui.activites;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputFilter;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +33,9 @@ import com.example.nothingtasks.data.model.TaskList;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView todayCount, scheduledCount, allCount, flaggedCount;
 
     // ✅ Handler for auto-updating scheduled count
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private Runnable scheduledUpdaterRunnable;
 
     @Override
@@ -147,13 +147,27 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        db.taskListDao().getAllLists().observe(this, taskLists -> adapter.setTaskLists(taskLists));
+        // Observe task lists
+        db.taskListDao().getAllLists().observe(this, taskLists -> {
+            if (taskLists == null) return;
+            db.reminderDao().getAllReminders().observe(this, reminders -> {
+                if (reminders == null) return;
+                Map<Integer, Integer> reminderCounts = new HashMap<>();
+                for (Reminder r : reminders) {
+                    Integer listId = r.getListId();
+                    if (listId != null) {
+                        reminderCounts.put(listId, reminderCounts.getOrDefault(listId, 0) + 1);
+                    }
+                }
+                for (TaskList list : taskLists) {
+                    list.setReminderCount(reminderCounts.getOrDefault(list.getId(), 0));
+                }
+                adapter.setTaskLists(taskLists);
+            });
+        });
 
         // Observe counts
         observeGridCounts();
-
-        // Optional first-time refresh
-        updateGridCounts();
     }
 
     private void openGridActivity(int filterType) {
@@ -191,25 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 flaggedCount.setText(String.valueOf(reminders.size()))
         );
     }
-
-    private void updateGridCounts() {
-        String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-
-        new Thread(() -> {
-            int countAll = db.reminderDao().getCountAll();
-            int countToday = db.reminderDao().getCountToday(todayDate);
-            int countScheduled = db.reminderDao().getCountScheduled(todayDate);
-            int countFlagged = db.reminderDao().getCountFlagged();
-
-            runOnUiThread(() -> {
-                allCount.setText(String.valueOf(countAll));
-                todayCount.setText(String.valueOf(countToday));
-                scheduledCount.setText(String.valueOf(countScheduled));
-                flaggedCount.setText(String.valueOf(countFlagged));
-            });
-        }).start();
-    }
-
     private void showAddListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_list, null);
