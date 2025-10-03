@@ -1,17 +1,18 @@
 package com.example.nothingtasks.ui.activites;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.graphics.Canvas;
-
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,8 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,72 +42,79 @@ public class ListDetailsActivity extends AppCompatActivity {
     private String listName;
     private ReminderAdapter reminderAdapter;
 
+    private RecyclerView remindersRecycler;
+    private RecyclerView completedRecycler;
+    private LinearLayout completedSection;
+    private View resizeHandle;
+
+    private int defaultActiveWeight = 7;
+    private int defaultCompletedWeight = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_details);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.listDetailRoot), (v, insets) -> {
+        View root = findViewById(R.id.listDetailRoot);
+        ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         View emptyStateView = findViewById(R.id.emptyStateView);
-        ViewGroup completedSection = findViewById(R.id.completedSection);
+        completedSection = findViewById(R.id.completedSection);
+        resizeHandle = findViewById(R.id.completedDivider);
+
+        remindersRecycler = findViewById(R.id.remindersRecycler);
+        completedRecycler = findViewById(R.id.completedRecycler);
+
         // Get list ID and name from Intent
         listId = getIntent().getIntExtra("listId", -1);
         listName = getIntent().getStringExtra("listName");
-
         if (listId == -1 || listName == null) {
             Toast.makeText(this, "Invalid list data", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
+        // Top bar
         TextView title = findViewById(R.id.listTitle);
         title.setText(listName);
 
-        // Back button closes activity
         ImageButton back = findViewById(R.id.backButton);
         back.setOnClickListener(v -> finish());
 
-        // Delete list button with DB delete logic
         ImageButton delete = findViewById(R.id.deleteListButton);
         delete.setOnClickListener(v -> {
             new Thread(() -> {
                 TaskDatabase db = TaskDatabase.getInstance(getApplicationContext());
                 db.taskListDao().deleteListById(listId);
-
                 runOnUiThread(() -> {
                     Toast.makeText(this, "List deleted", Toast.LENGTH_SHORT).show();
-                    finish(); // close activity and return to previous screen
+                    finish();
                 });
             }).start();
         });
 
-        // Setup DB, DAO, Adapter, RecyclerView
+        // RecyclerView setup
         TaskDatabase db = TaskDatabase.getInstance(this);
         ReminderDao reminderDao = db.reminderDao();
 
-        RecyclerView recyclerView = findViewById(R.id.remindersRecycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        remindersRecycler.setLayoutManager(new LinearLayoutManager(this));
         reminderAdapter = new ReminderAdapter(reminderDao);
-        recyclerView.setAdapter(reminderAdapter);
+        remindersRecycler.setAdapter(reminderAdapter);
 
         // Observe reminders
         reminderDao.getRemindersByList(listId).observe(this, reminders -> {
-            View completedDivider = findViewById(R.id.completedDivider);
             View completedTitle = findViewById(R.id.completedTitle);
-            RecyclerView completedRecycler = findViewById(R.id.completedRecycler);
 
             if (reminders == null || reminders.isEmpty()) {
                 emptyStateView.setVisibility(View.VISIBLE);
                 reminderAdapter.setReminders(null);
                 completedSection.setVisibility(View.GONE);
-                completedDivider.setVisibility(View.GONE);
+                resizeHandle.setVisibility(View.GONE);
                 return;
             }
 
@@ -116,18 +124,15 @@ public class ListDetailsActivity extends AppCompatActivity {
             List<Reminder> completed = new ArrayList<>();
 
             for (Reminder r : reminders) {
-                if (r.isDone) {
-                    completed.add(r);
-                } else {
-                    active.add(r);
-                }
+                if (r.isDone) completed.add(r);
+                else active.add(r);
             }
 
             reminderAdapter.setReminders(active);
 
             if (!completed.isEmpty()) {
                 completedSection.setVisibility(View.VISIBLE);
-                completedDivider.setVisibility(View.VISIBLE);
+                resizeHandle.setVisibility(View.VISIBLE);
                 completedTitle.setVisibility(View.VISIBLE);
                 completedRecycler.setVisibility(View.VISIBLE);
 
@@ -135,16 +140,15 @@ public class ListDetailsActivity extends AppCompatActivity {
                     completedRecycler.setLayoutManager(new LinearLayoutManager(this));
                     completedRecycler.setAdapter(new ReminderAdapter(reminderDao));
                 }
-
                 ((ReminderAdapter) completedRecycler.getAdapter()).setReminders(completed);
 
             } else {
                 completedSection.setVisibility(View.GONE);
-                completedDivider.setVisibility(View.GONE);
+                resizeHandle.setVisibility(View.GONE);
             }
         });
 
-        // ✅ Add swipe-to-delete support
+        // Swipe to delete for active reminders
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                     @Override
@@ -156,51 +160,38 @@ public class ListDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        int position = viewHolder.getAdapterPosition();
-                        Reminder reminderToDelete = reminderAdapter.getReminderAt(position);
+                        int pos = viewHolder.getAdapterPosition();
+                        Reminder reminderToDelete = reminderAdapter.getReminderAt(pos);
                         viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                        // Fade-out animation before actual removal
-                        View itemView = viewHolder.itemView;
-                        itemView.animate()
+
+                        viewHolder.itemView.animate()
                                 .alpha(0f)
                                 .setDuration(200)
                                 .withEndAction(() -> {
-                                    // Remove from adapter list + DB
                                     reminderAdapter.removeReminder(reminderToDelete);
-
-
                                     new Thread(() -> reminderDao.delete(reminderToDelete)).start();
 
-                                    // SNACK BAR
-                                    Snackbar snackbar = Snackbar.make(findViewById(R.id.listDetailRoot), "Reminder deleted", Snackbar.LENGTH_LONG)
-                                            .setAction("UNDO", v -> {
-                                                // Re-insert if Undo tapped
-                                                new Thread(() -> reminderDao.insert(reminderToDelete)).start();
-                                            })
+                                    Snackbar snackbar = Snackbar.make(root, "Reminder deleted", Snackbar.LENGTH_LONG)
+                                            .setAction("UNDO", v -> new Thread(() -> reminderDao.insert(reminderToDelete)).start())
                                             .setAnchorView(R.id.bottomBar);
 
-                                    // Styling
                                     View sbView = snackbar.getView();
-                                    sbView.setBackgroundColor(Color.parseColor("#333333")); // dark bg
+                                    sbView.setBackgroundColor(Color.parseColor("#333333"));
                                     TextView sbText = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
                                     sbText.setTextColor(Color.WHITE);
                                     sbText.setTextSize(14f);
                                     sbText.setTypeface(ResourcesCompat.getFont(ListDetailsActivity.this, R.font.nf));
                                     TextView sbAction = sbView.findViewById(com.google.android.material.R.id.snackbar_action);
-                                    sbAction.setTextColor(Color.parseColor("#2196F3")); // accent blue
+                                    sbAction.setTextColor(Color.parseColor("#2196F3"));
 
                                     snackbar.show();
                                 });
                     }
 
-
-
                     @Override
                     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                                             @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                             int actionState, boolean isCurrentlyActive) {
-
-                        // Background color
                         Paint paint = new Paint();
                         paint.setColor(ContextCompat.getColor(ListDetailsActivity.this, R.color.flagRed));
 
@@ -208,7 +199,6 @@ public class ListDetailsActivity extends AppCompatActivity {
                         c.drawRect(itemView.getLeft(), itemView.getTop(),
                                 itemView.getLeft() + dX, itemView.getBottom(), paint);
 
-                        // Draw trash icon
                         Drawable icon = ContextCompat.getDrawable(ListDetailsActivity.this, android.R.drawable.ic_menu_delete);
                         int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                         int iconTop = itemView.getTop() + iconMargin;
@@ -216,30 +206,89 @@ public class ListDetailsActivity extends AppCompatActivity {
                         int iconRight = iconLeft + icon.getIntrinsicWidth();
                         int iconBottom = iconTop + icon.getIntrinsicHeight();
 
-                        if (dX > 0) { // swiping right
+                        if (dX > 0) {
                             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
                             icon.draw(c);
                         }
 
                         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                     }
-                }
-        );
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+                });
+        itemTouchHelper.attachToRecyclerView(remindersRecycler);
 
-
-        // Add Reminder button
+        // Add Reminder
         findViewById(R.id.addReminderBtn).setOnClickListener(v -> {
             AddReminderDialog.show(this, (reminderTitle, desc, date, repeat) -> {
-                Reminder reminder = new Reminder(reminderTitle, desc, false, false, date, listId, repeat); // ✅ pass repeat directly
+                Reminder reminder = new Reminder(reminderTitle, desc, false, false, date, listId, repeat);
                 new Thread(() -> reminderDao.insert(reminder)).start();
             });
         });
 
-
         // Filter button
-        findViewById(R.id.filterButton).setOnClickListener(v -> {
-            Toast.makeText(this, "Filter coming soon", Toast.LENGTH_SHORT).show();
+        findViewById(R.id.filterButton).setOnClickListener(v ->
+                Toast.makeText(this, "Filter coming soon", Toast.LENGTH_SHORT).show()
+        );
+
+        // ✅ Draggable divider for resizing completed section
+        setupResizeHandle();
+    }
+
+    private void setupResizeHandle() {
+        resizeHandle.setOnTouchListener(new View.OnTouchListener() {
+            float startY;
+            int activeHeight, completedHeight;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                LinearLayout.LayoutParams activeParams =
+                        (LinearLayout.LayoutParams) remindersRecycler.getLayoutParams();
+                LinearLayout.LayoutParams completedParams =
+                        (LinearLayout.LayoutParams) completedSection.getLayoutParams();
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startY = event.getRawY();
+                        activeHeight = remindersRecycler.getHeight();
+                        completedHeight = completedSection.getHeight();
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        float dy = event.getRawY() - startY;
+                        int newActive = activeHeight + (int) dy;
+                        int newCompleted = completedHeight - (int) dy;
+
+                        if (newActive > 200 && newCompleted > 200) {
+                            activeParams.height = newActive;
+                            activeParams.weight = 0;
+                            completedParams.height = newCompleted;
+                            completedParams.weight = 0;
+
+                            remindersRecycler.setLayoutParams(activeParams);
+                            completedSection.setLayoutParams(completedParams);
+                        }
+                        return true;
+                }
+                return false;
+            }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Reset split to default 70/30
+        LinearLayout.LayoutParams activeParams =
+                (LinearLayout.LayoutParams) remindersRecycler.getLayoutParams();
+        LinearLayout.LayoutParams completedParams =
+                (LinearLayout.LayoutParams) completedSection.getLayoutParams();
+
+        activeParams.height = 0;
+        activeParams.weight = defaultActiveWeight;
+        completedParams.height = 0;
+        completedParams.weight = defaultCompletedWeight;
+
+        remindersRecycler.setLayoutParams(activeParams);
+        completedSection.setLayoutParams(completedParams);
     }
 }

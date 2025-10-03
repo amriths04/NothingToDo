@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base line (full width, semi-transparent) -->
+    <item>
+        <shape android:shape="rectangle">
+            <size android:height="16dp" />
+            <solid android:color="?attr/cardTextSecondary" />
+        </shape>
+    </item>
+
+    <!-- Central grip indicator (thinner horizontal bar) -->
+    <item android:gravity="center">
+        <shape android:shape="rectangle">
+            <size android:height="4dp" android:width="40dp" />
+            <solid android:color="?attr/cardBackgroundColor" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+
+</layer-list>
