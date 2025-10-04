@@ -3,6 +3,7 @@
     <style name="Theme.NothingTasks" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="cardBackgroundColor">@color/background</item>
         <item name="cardTextPrimary">@color/textPrimary</item>
+        <item name="inverseTextPrimary">@color/inversePrimary</item>
         <item name="cardTextSecondary">@color/textSecondary</item>
         <item name="cardIconTint">@color/flagRed</item>
         <item name="secbg">@color/secbackground</item>

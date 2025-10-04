@@ -3,6 +3,7 @@
     <color name="background">#010001</color>
     <color name="secbackground">#1D1C1F</color>
     <color name="textPrimary">#FFFFFF</color>
+    <color name="inversePrimary">#000000</color>
     <color name="textSecondary">#B3B3B3</color>
     <color name="flagRed">#D61B21</color>
     <color name="pillOverdue">#FF6D6D</color>
