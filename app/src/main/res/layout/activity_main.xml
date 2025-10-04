@@ -158,16 +158,17 @@
         android:paddingBottom="12dp"
         android:elevation="8dp">
 
-        <TextView
-            android:id="@+id/newReminderText"
+        <ImageView
+            android:id="@+id/newReminderIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+  New Reminder"
-            android:textSize="18sp"
-            android:textColor="?attr/cardTextPrimary"
-            android:fontFamily="@font/nf"
+            android:src="@drawable/newrem"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:tint="?attr/cardTextPrimary" />
+
 
         <ImageButton
             android:id="@+id/settingsButton"

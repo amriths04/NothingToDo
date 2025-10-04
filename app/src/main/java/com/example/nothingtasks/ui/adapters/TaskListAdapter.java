@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nothingtasks.R;
 import com.example.nothingtasks.data.model.TaskList;
+import com.example.nothingtasks.ui.helpers.ReminderCounterHelper;
 
 import java.util.List;
 
@@ -50,12 +51,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
         holder.icon.setText(firstLetter);
 
         // Set reminder count only if > 0
-        if (list.getReminderCount() > 0) {
-            holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(list.getReminderCount()));
-        } else {
-            holder.count.setVisibility(View.GONE);
-        }
+        ReminderCounterHelper.bindCount(holder.count, list.getReminderCount());
+
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
                 clickListener.onListClick(list);

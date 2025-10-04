@@ -111,8 +111,9 @@ public class MainActivity extends AppCompatActivity {
         addListButton.setOnClickListener(v -> showAddListDialog());
 
         // Add Reminder
-        TextView newReminderText = findViewById(R.id.newReminderText);
-        newReminderText.setOnClickListener(v -> {
+        ImageView newReminderIcon = findViewById(R.id.newReminderIcon);
+
+        newReminderIcon.setOnClickListener(v -> {
             AddReminderDialog.show(MainActivity.this, (title, desc, dateTime, repeat) -> {
                 Reminder reminder = new Reminder(title, desc, false, false, dateTime, null, repeat);
                 new Thread(() -> {
