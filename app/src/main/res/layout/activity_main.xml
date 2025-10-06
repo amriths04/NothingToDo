@@ -135,11 +135,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myListsRecycler"
         android:layout_width="match_parent"
-        android:layout_height="470dp"
+        android:layout_height="473dp"
         android:layout_above="@+id/bottomBar"
         android:layout_below="@id/topContainer"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginBottom="-4dp"
         android:clipToPadding="false"
         android:overScrollMode="ifContentScrolls"
         android:scrollbars="vertical" />
