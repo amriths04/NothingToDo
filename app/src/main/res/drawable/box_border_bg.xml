@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+
+        <!-- Background inside the box -->
+        <solid android:color="?attr/cardBackgroundColor" />
+
+        <!-- Border around the box -->
+        <stroke
+            android:width="0.7dp"
+            android:color="?attr/cardTextSecondary" />
+
+        <!-- Rounded corners -->
+        <corners android:radius="12dp" />
+    </shape>
+
+</selector>

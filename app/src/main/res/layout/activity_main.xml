@@ -98,70 +98,97 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp" />
             </LinearLayout>
-            <!-- My Lists Title Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="32dp"
-                android:gravity="center_vertical"
-                android:paddingBottom="4dp">
-
-                <TextView
-                    android:id="@+id/myListsTitle"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="My Lists"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/cardTextPrimary"
-                    android:fontFamily="@font/nf"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"/>
-
-                <ImageButton
-                    android:id="@+id/addListButton"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@android:color/transparent"
-                    android:src="@android:drawable/ic_input_add"
-                    app:tint="?attr/cardIconTint"
-                    android:contentDescription="Add New List" />
-            </LinearLayout>
     </LinearLayout>
 
-        <!-- Scrollable Custom List Section -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myListsRecycler"
+    <!-- My Lists Box -->
+    <LinearLayout
+        android:id="@+id/myListsBox"
         android:layout_width="match_parent"
-        android:layout_height="473dp"
-        android:layout_above="@+id/bottomBar"
+        android:layout_height="0dp"
         android:layout_below="@id/topContainer"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="-4dp"
-        android:clipToPadding="false"
-        android:overScrollMode="ifContentScrolls"
-        android:scrollbars="vertical" />
+        android:layout_above="@id/bottomBar"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical"
+        android:background="@drawable/box_border_bg"
+        android:elevation="4dp"
+        android:paddingStart="1dp"
+        android:paddingEnd="1dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp">
 
+    <!-- My Lists Title Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp">
 
-    <!-- Fixed Bottom Bar -->
-    <RelativeLayout
-    android:id="@+id/bottomBar"
-    android:layout_width="match_parent"
-    android:layout_height="59dp"
-    android:layout_alignParentBottom="true"
-    android:background="?attr/cardBackgroundColor"
-    android:elevation="8dp">
+        <TextView
+            android:id="@+id/myListsTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nf"
+            android:paddingStart="18dp"
+            android:paddingEnd="4dp"
+            android:text="My Lists"
+            android:textColor="?attr/cardTextPrimary"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-    <!-- Top border line (always full width) -->
+        <ImageButton
+            android:id="@+id/addListButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:paddingEnd="7dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Add New List"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="?attr/cardIconTint" />
+    </LinearLayout>
+
+    <!-- Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="0.7dp"
-        android:layout_alignParentTop="true"
         android:background="?attr/cardTextSecondary" />
 
-    <!-- Content wrapper with padding -->
+    <!-- Scrollable RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myListsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp" />
+
+    </LinearLayout>
+    <!-- Fixed Bottom Bar -->
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/cardBackgroundColor"
+        android:elevation="8dp">
+
+        <!-- Top border line (always full width) -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:layout_alignParentTop="true"
+            android:background="?attr/cardTextSecondary" />
+
+        <!-- Bottom bar content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -197,5 +224,5 @@
                 android:src="@drawable/ic_sett"
                 app:tint="?attr/cardIconTint" />
         </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>
