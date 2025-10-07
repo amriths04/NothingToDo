@@ -3,14 +3,17 @@ package com.example.nothingtasks.ui.activites;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,7 @@ import com.example.nothingtasks.ui.adapters.ReminderAdapter;
 import com.example.nothingtasks.data.db.ReminderDao;
 import com.example.nothingtasks.data.db.TaskDatabase;
 import com.example.nothingtasks.data.model.Reminder;
+import com.example.nothingtasks.ui.helpers.Filter;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -226,8 +230,25 @@ public class ListDetailsActivity extends AppCompatActivity {
 
         // Filter button
         findViewById(R.id.filterButton).setOnClickListener(v ->
-                Toast.makeText(this, "Filter coming soon", Toast.LENGTH_SHORT).show()
+                Filter.show(ListDetailsActivity.this, (today, tomorrow, done, flagged, overdue, repeatOption, sortOption) -> {
+                    // Apply filters/sort to RecyclerView
+                    // For now, just show a Toast to confirm values
+                    String message = "Today=" + today +
+                            ", Tomorrow=" + tomorrow +
+                            ", Done=" + done +
+                            ", Flagged=" + flagged +
+                            ", Overdue=" + overdue +
+                            ", Repeat=" + repeatOption +
+                            ", Sort=" + sortOption;
+
+                    Toast.makeText(ListDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                    // TODO: Add your RecyclerView filtering logic here
+                })
         );
+
+
+
 
         // ✅ Draggable divider for resizing completed section
         setupResizeHandle();

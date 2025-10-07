@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filterOverlayRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/overlay_rounded_bg"
+    android:padding="16dp"
+    android:elevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Drag handle -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="?attr/inverseTextPrimary"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Filter Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filter"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="?attr/inverseTextPrimary"
+            android:paddingBottom="8dp"
+            android:fontFamily="@font/nf"/>
+
+        <!-- Basic Filters -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/filterToday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <CheckBox
+                    android:id="@+id/filterTomorrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tomorrow"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <CheckBox
+                    android:id="@+id/filterDone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Done"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <CheckBox
+                    android:id="@+id/filterFlagged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flagged"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <CheckBox
+                    android:id="@+id/filterOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Overdue"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Repeat Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Repeat"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="12dp"
+            android:paddingBottom="4dp"
+            android:textColor="?attr/inverseTextPrimary"
+            android:fontFamily="@font/nf"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/repeatNone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="None"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <RadioButton
+                    android:id="@+id/repeatDay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Day"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <RadioButton
+                    android:id="@+id/repeatWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Week"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <RadioButton
+                    android:id="@+id/repeatMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Sort Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="12dp"
+            android:paddingBottom="4dp"
+            android:textColor="?attr/inverseTextPrimary"
+            android:fontFamily="@font/nf"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/sortDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <RadioButton
+                    android:id="@+id/sortTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+
+                <RadioButton
+                    android:id="@+id/sortPriority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Priority"
+                    android:textColor="?attr/inverseTextPrimary"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/nf"/>
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+</ScrollView>
