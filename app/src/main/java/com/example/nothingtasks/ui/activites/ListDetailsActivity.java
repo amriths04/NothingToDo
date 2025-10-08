@@ -230,20 +230,24 @@ public class ListDetailsActivity extends AppCompatActivity {
 
         // Filter button
         findViewById(R.id.filterButton).setOnClickListener(v ->
-                Filter.show(ListDetailsActivity.this, (today, tomorrow, done, flagged, overdue, repeatOption, sortOption) -> {
-                    // Apply filters/sort to RecyclerView
-                    // For now, just show a Toast to confirm values
-                    String message = "Today=" + today +
-                            ", Tomorrow=" + tomorrow +
-                            ", Done=" + done +
-                            ", Flagged=" + flagged +
-                            ", Overdue=" + overdue +
-                            ", Repeat=" + repeatOption +
+                Filter.show(ListDetailsActivity.this, (dateFilter, flagFilter, doneFilter, repeatFilter, sortOption) -> {
+                    // Display selected filters for testing
+                    String message = "Date=" + dateFilter +
+                            ", Flag=" + flagFilter +
+                            ", Done=" + doneFilter +
+                            ", Repeat=" + repeatFilter +
                             ", Sort=" + sortOption;
 
                     Toast.makeText(ListDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                    // TODO: Add your RecyclerView filtering logic here
+                    // TODO: Implement RecyclerView filtering + sorting logic
+                    // Example (pseudo-code):
+            /*
+            List<Reminder> filteredList = ReminderFilterHelper.filter(
+                    allReminders, dateFilter, flagFilter, doneFilter, repeatFilter, sortOption
+            );
+            reminderAdapter.submitList(filteredList);
+            */
                 })
         );
 
