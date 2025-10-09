@@ -17,7 +17,7 @@
             android:layout_width="36dp"
             android:layout_height="4dp"
             android:layout_gravity="center_horizontal"
-            android:background="?attr/inverseTextPrimary"
+            android:background="?attr/cardTextPrimary"
             android:layout_marginBottom="12dp" />
 
         <!-- Filter Title -->
@@ -27,7 +27,7 @@
             android:text="Filter"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="?attr/inverseTextPrimary"
+            android:textColor="?attr/cardTextPrimary"
             android:paddingBottom="8dp"
             android:fontFamily="@font/nf" />
 
@@ -38,7 +38,7 @@
             android:text="Date"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="?attr/inverseTextPrimary"
+            android:textColor="?attr/cardTextPrimary"
             android:paddingTop="8dp"
             android:paddingBottom="1dp"
             android:fontFamily="@font/nf" />
@@ -52,32 +52,35 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/filterToday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Today"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/filterUpcoming"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Upcoming"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/filterOverdue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Overdue"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -90,7 +93,7 @@
             android:textStyle="bold"
             android:paddingTop="3dp"
             android:paddingBottom="1dp"
-            android:textColor="?attr/inverseTextPrimary"
+            android:textColor="?attr/cardTextPrimary"
             android:fontFamily="@font/nf" />
 
         <HorizontalScrollView
@@ -102,14 +105,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/flagOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Flagged only"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -122,7 +126,7 @@
             android:textStyle="bold"
             android:paddingTop="3dp"
             android:paddingBottom="1dp"
-            android:textColor="?attr/inverseTextPrimary"
+            android:textColor="?attr/cardTextPrimary"
             android:fontFamily="@font/nf" />
 
         <HorizontalScrollView
@@ -134,23 +138,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/doneOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Completed only"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/pendingOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pending only"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -163,7 +169,7 @@
             android:textStyle="bold"
             android:paddingTop="3dp"
             android:paddingBottom="1dp"
-            android:textColor="?attr/inverseTextPrimary"
+            android:textColor="?attr/cardTextPrimary"
             android:fontFamily="@font/nf" />
 
         <HorizontalScrollView
@@ -175,23 +181,25 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/repeatOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Repeating only"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/nonRepeatOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Non-repeating only"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -204,7 +212,7 @@
             android:textStyle="bold"
             android:paddingTop="7dp"
             android:paddingBottom="4dp"
-            android:textColor="?attr/inverseTextPrimary"
+            android:textColor="?attr/cardTextPrimary"
             android:fontFamily="@font/nf" />
 
         <HorizontalScrollView
@@ -221,46 +229,77 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Date ↑"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
                 <RadioButton
                     android:id="@+id/sortDateDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Date ↓"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
                 <RadioButton
                     android:id="@+id/sortTitleAsc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Title A–Z"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
                 <RadioButton
                     android:id="@+id/sortTitleDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Title Z–A"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
 
                 <RadioButton
                     android:id="@+id/sortFlaggedFirst"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Flagged first"
-                    android:textColor="?attr/inverseTextPrimary"
+                    android:textColor="?attr/cardTextPrimary"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/nf" />
+                    android:fontFamily="@font/nf"
+                    android:buttonTint="?attr/cardIconTint"/>
             </LinearLayout>
         </HorizontalScrollView>
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear"
+                android:textColor="?attr/cardTextPrimary"
+                android:layout_marginEnd="12dp"
+                android:fontFamily="@font/nf" />
+
+            <Button
+                android:id="@+id/btnApply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply"
+                android:textColor="?attr/cardTextPrimary"
+                android:fontFamily="@font/nf" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

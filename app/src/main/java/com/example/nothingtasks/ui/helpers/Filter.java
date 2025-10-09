@@ -8,6 +8,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 
@@ -17,11 +20,11 @@ public class Filter {
 
     public interface OnFilterApplied {
         void onApply(
-                String dateFilter,   // Today / Upcoming / Overdue
-                String flagFilter,   // Flagged only
-                String doneFilter,   // Completed only / Pending only
-                String repeatFilter, // Repeating only / Non-repeating only
-                String sortOption    // Date ↑ / Date ↓ / Title A–Z / Title Z–A / Flagged first
+                String[] dateFilters,   // Today / Upcoming / Overdue (any combination)
+                boolean flagFilter,     // Flagged only
+                String[] doneFilters,   // Completed only / Pending only
+                String[] repeatFilters, // Repeating only / Non-repeating only
+                String sortOption       // Date ↑ / Date ↓ / Title A–Z / Title Z–A / Flagged first
         );
     }
 
@@ -75,29 +78,24 @@ public class Filter {
             }
         });
 
-        // --- FIND BUTTON GROUPS ---
+        // --- FIND FILTERS (CHECKBOXES) ---
+        CheckBox dateToday = overlay.findViewById(R.id.filterToday);
+        CheckBox dateUpcoming = overlay.findViewById(R.id.filterUpcoming);
+        CheckBox dateOverdue = overlay.findViewById(R.id.filterOverdue);
+        CheckBox[] dateFilters = {dateToday, dateUpcoming, dateOverdue};
 
-        // Date group
-        RadioButton dateToday = overlay.findViewById(R.id.filterToday);
-        RadioButton dateUpcoming = overlay.findViewById(R.id.filterUpcoming);
-        RadioButton dateOverdue = overlay.findViewById(R.id.filterOverdue);
-        RadioButton[] dateGroup = {dateToday, dateUpcoming, dateOverdue};
+        CheckBox flagOnly = overlay.findViewById(R.id.flagOnly);
+        CheckBox[] flagFilters = {flagOnly};
 
-        // Flag group
-        RadioButton flagOnly = overlay.findViewById(R.id.flagOnly);
-        RadioButton[] flagGroup = {flagOnly};
+        CheckBox doneOnly = overlay.findViewById(R.id.doneOnly);
+        CheckBox pendingOnly = overlay.findViewById(R.id.pendingOnly);
+        CheckBox[] doneFilters = {doneOnly, pendingOnly};
 
-        // Done group
-        RadioButton doneOnly = overlay.findViewById(R.id.doneOnly);
-        RadioButton pendingOnly = overlay.findViewById(R.id.pendingOnly);
-        RadioButton[] doneGroup = {doneOnly, pendingOnly};
+        CheckBox repeatOnly = overlay.findViewById(R.id.repeatOnly);
+        CheckBox nonRepeatOnly = overlay.findViewById(R.id.nonRepeatOnly);
+        CheckBox[] repeatFilters = {repeatOnly, nonRepeatOnly};
 
-        // Repeat group
-        RadioButton repeatOnly = overlay.findViewById(R.id.repeatOnly);
-        RadioButton nonRepeatOnly = overlay.findViewById(R.id.nonRepeatOnly);
-        RadioButton[] repeatGroup = {repeatOnly, nonRepeatOnly};
-
-        // Sort group
+        // --- SORT OPTIONS (RADIOBUTTONS) ---
         RadioButton sortDateAsc = overlay.findViewById(R.id.sortDateAsc);
         RadioButton sortDateDesc = overlay.findViewById(R.id.sortDateDesc);
         RadioButton sortTitleAsc = overlay.findViewById(R.id.sortTitleAsc);
@@ -105,43 +103,80 @@ public class Filter {
         RadioButton sortFlaggedFirst = overlay.findViewById(R.id.sortFlaggedFirst);
         RadioButton[] sortGroup = {sortDateAsc, sortDateDesc, sortTitleAsc, sortTitleDesc, sortFlaggedFirst};
 
-        // --- SHARED CLICK LOGIC ---
-        View.OnClickListener listenerShared = v -> {
-            // Ensure mutual exclusivity for each group
-            updateGroup(dateGroup, v);
-            updateGroup(flagGroup, v);
-            updateGroup(doneGroup, v);
-            updateGroup(repeatGroup, v);
-            updateGroup(sortGroup, v);
+        LinearLayout buttonLayout = overlay.findViewById(R.id.buttonLayout);
+        Button btnApply = overlay.findViewById(R.id.btnApply);
+        Button btnClear = overlay.findViewById(R.id.btnClear);
 
-            // Notify listener with explicit defaults if none selected
-            listener.onApply(
-                    getCheckedText(dateGroup, "Today"),
-                    getCheckedText(flagGroup, "Flagged only"),
-                    getCheckedText(doneGroup, "Completed only"),
-                    getCheckedText(repeatGroup, "Repeating only"),
-                    getCheckedText(sortGroup, "Date ↑")
-            );
+        // --- SHOW BUTTONS WHEN ANY FILTER OR SORT ACTIVE ---
+        Runnable updateButtonVisibility = () -> {
+            boolean anyChecked = false;
+
+            for (CheckBox cb : dateFilters) if (cb.isChecked()) anyChecked = true;
+            for (CheckBox cb : flagFilters) if (cb.isChecked()) anyChecked = true;
+            for (CheckBox cb : doneFilters) if (cb.isChecked()) anyChecked = true;
+            for (CheckBox cb : repeatFilters) if (cb.isChecked()) anyChecked = true;
+            for (RadioButton rb : sortGroup) if (rb.isChecked()) anyChecked = true;
+
+            buttonLayout.setVisibility(anyChecked ? View.VISIBLE : View.GONE);
         };
 
-        // Attach click listeners
-        attachClick(dateGroup, listenerShared);
-        attachClick(flagGroup, listenerShared);
-        attachClick(doneGroup, listenerShared);
-        attachClick(repeatGroup, listenerShared);
-        attachClick(sortGroup, listenerShared);
+        // Attach checkbox listener
+        for (CheckBox cb : dateFilters) cb.setOnClickListener(v -> updateButtonVisibility.run());
+        for (CheckBox cb : flagFilters) cb.setOnClickListener(v -> updateButtonVisibility.run());
+        for (CheckBox cb : doneFilters) cb.setOnClickListener(v -> updateButtonVisibility.run());
+        for (CheckBox cb : repeatFilters) cb.setOnClickListener(v -> updateButtonVisibility.run());
+
+        // --- APPLY BUTTON ---
+        btnApply.setOnClickListener(v -> {
+            String[] selectedDates = getChecked(dateFilters);
+            String[] selectedDone = getChecked(doneFilters);
+            String[] selectedRepeat = getChecked(repeatFilters);
+            boolean flag = flagOnly.isChecked();
+            String sortOption = getCheckedRadio(sortGroup, "Date ↑");
+
+            listener.onApply(selectedDates, flag, selectedDone, selectedRepeat, sortOption);
+            popup.dismiss();
+        });
+
+        // --- CLEAR BUTTON ---
+        btnClear.setOnClickListener(v -> {
+            for (CheckBox cb : dateFilters) cb.setChecked(false);
+            for (CheckBox cb : flagFilters) cb.setChecked(false);
+            for (CheckBox cb : doneFilters) cb.setChecked(false);
+            for (CheckBox cb : repeatFilters) cb.setChecked(false);
+            for (RadioButton rb : sortGroup) rb.setChecked(false);
+            buttonLayout.setVisibility(View.GONE);
+        });
+
+        // --- SORT BUTTON TOGGLE LOGIC ---
+        final RadioButton[] currentChecked = {null}; // track currently selected
+
+        for (RadioButton rb : sortGroup) {
+            rb.setOnClickListener(v -> {
+                if (currentChecked[0] == rb) {
+                    // Clicked the same button → uncheck it
+                    rb.setChecked(false);
+                    currentChecked[0] = null;
+                } else {
+                    // Clicked a new button → check it and uncheck previous
+                    if (currentChecked[0] != null) currentChecked[0].setChecked(false);
+                    rb.setChecked(true);
+                    currentChecked[0] = rb;
+                }
+                updateButtonVisibility.run();
+            });
+        }
+
     }
 
-    private static void attachClick(RadioButton[] group, View.OnClickListener listener) {
-        for (RadioButton rb : group) rb.setOnClickListener(listener);
+    private static String[] getChecked(CheckBox[] group) {
+        return java.util.Arrays.stream(group)
+                .filter(CheckBox::isChecked)
+                .map(cb -> cb.getText().toString())
+                .toArray(String[]::new);
     }
 
-    private static void updateGroup(RadioButton[] group, View clicked) {
-        for (RadioButton rb : group)
-            rb.setChecked(rb == clicked);
-    }
-
-    private static String getCheckedText(RadioButton[] group, String defaultText) {
+    private static String getCheckedRadio(RadioButton[] group, String defaultText) {
         for (RadioButton rb : group)
             if (rb.isChecked()) return rb.getText().toString();
         return defaultText;

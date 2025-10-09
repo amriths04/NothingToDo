@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- Use a theme attribute for dynamic color -->
-    <solid android:color="?attr/cardTextSecondary" />
+    <solid android:color="?attr/secbg" />
 
     <!-- Rounded top corners -->
     <corners android:topLeftRadius="16dp"
